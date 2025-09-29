@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berth Allocation Simulation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+            overflow-y: scroll;
+        }
+        .card {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #334155;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        .date-btn.active {
+            background-color: #2563eb;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-slate-900">Berth Allocation System</h1>
+            <p class="text-lg text-slate-600 mt-2">Visakhapatnam Ports</p>
+        </header>
+
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Left Column: Controls & Analytics -->
+            <aside class="lg:w-1/3 xl:w-1/4 space-y-6">
+                
+                <!-- Controls Card -->
+                <div class="card bg-white p-6 rounded-xl">
+                    <h2 class="text-2xl font-bold mb-4 border-b pb-2">Controls</h2>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Select Simulation Day:</label>
+                        <div class="flex rounded-md shadow-sm">
+                            <button id="day27Btn" class="date-btn flex-1 py-2 px-4 rounded-l-md border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                                Sep 27
+                            </button>
+                            <button id="day28Btn" class="date-btn -ml-px flex-1 py-2 px-4 border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                                Sep 28
+                            </button>
+                            <button id="day29Btn" class="date-btn -ml-px flex-1 py-2 px-4 rounded-r-md border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                                Sep 29
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <button id="resetDataBtn" class="w-full bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-700 transition duration-300 shadow-md">
+                            Reset Day
+                        </button>
+                        <div class="tooltip w-full">
+                            <button id="runOptimizationBtn" class="w-full bg-emerald-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-emerald-700 transition duration-300 shadow-lg text-lg">
+                                RUN OPTIMIZATION
+                            </button>
+                             <span class="tooltiptext">Assigns waiting vessels to the best available and compatible berths to minimize delays.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytics Card -->
+                <div class="card bg-white p-6 rounded-xl">
+                    <h2 class="text-2xl font-bold mb-4 border-b pb-2">Performance Analytics</h2>
+                    <div id="analytics-content" class="space-y-3 text-lg">
+                        <!-- Analytics data will be injected here -->
+                    </div>
+                </div>
+
+                 <!-- Waiting Vessels Card -->
+                <div class="card bg-white p-6 rounded-xl">
+                    <h2 class="text-2xl font-bold mb-4 border-b pb-2">Vessels Awaiting Berthing</h2>
+                    <div id="waiting-vessels-list" class="space-y-3 max-h-96 overflow-y-auto">
+                        <!-- Waiting vessels will be listed here -->
+                    </div>
+                </div>
+
+            </aside>
+
+            <!-- Right Column: Operations Dashboard -->
+            <main class="lg:w-2/3 xl:w-3/4">
+                 <div class="card bg-white p-6 rounded-xl">
+                     <h2 class="text-2xl font-bold mb-6 text-center">Operations Dashboard: Berth Status</h2>
+                     <div id="berth-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                        <!-- Berth status cards will be injected here -->
+                    </div>
+                </div>
+
+                <!-- Berth Allotment Plan Section -->
+                <div class="card bg-white p-6 rounded-xl mt-8">
+                    <h2 class="text-2xl font-bold mb-6 text-center">Optimal Berth Allotment Plan</h2>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-slate-200">
+                            <thead class="bg-slate-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Vessel Name</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Assigned Berth</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Arrival Time</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Berthing Time</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Wait Time (Cost)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="allotment-plan-body" class="bg-white divide-y divide-slate-200">
+                                <!-- Plan will be injected here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // DATA CONSOLIDATED FROM ALL PDFS & BERTH PARTICULARS
+        const berthSpecifications = {
+            'EQ-1': { loa: 240.00, draft: 14.50 }, 'EQ-3': { loa: 240.00, draft: 14.50 },
+            'EQ-4': { loa: 240.00, draft: 14.50 }, 'EQ-5': { loa: 240.00, draft: 11.50 },
+            'EQ-6': { loa: 240.00, draft: 11.50 }, 'EQ-7': { loa: 240.00, draft: 14.50 },
+            'EQ-8': { loa: 235.00, draft: 14.50 }, 'EQ-9': { loa: 235.00, draft: 14.50 },
+            'EQ-10': { loa: 160.00, draft: 11.00 }, 'WQ-1': { loa: 240.00, draft: 11.00 },
+            'WQ-2': { loa: 240.00, draft: 13.50 }, 'WQ-3': { loa: 240.00, draft: 13.50 },
+            'WQ-4': { loa: 240.00, draft: 11.50 }, 'WQ-5': { loa: 240.00, draft: 11.50 },
+            'WQ-6': { loa: 230.00, draft: 14.50 }, 'WQ-7': { loa: 240.00, draft: 14.50 },
+            'WQ-8': { loa: 240.00, draft: 14.50 }, 'FB': { loa: 200.00, draft: 10.06 },
+            'OR-1': { loa: 195.00, draft: 11.00 }, 'OR-2': { loa: 195.00, draft: 11.00 },
+            'OR-3': { loa: 160.00, draft: 10.50 }, 'OSTT': { loa: 280.00, draft: 17.00 },
+            'LPG': { loa: 230.00, draft: 14.00 }, 'OB-1': { loa: 300.00, draft: 16.50 },
+            'OB-2': { loa: 300.00, draft: 17.00 }, 'C.TERMIN': { loa: 300.00, draft: 8.50 },
+            'VGCB': { loa: 300.00, draft: 18.10 }, 'CB-2': { loa: 390.00, draft: 16.00 },
+            'CB-3': { loa: 390.00, draft: 16.00 }, 'CB-4': { loa: 390.00, draft: 16.00 }
+        };
+
+        const portDataByDay = {
+            27: {
+                occupancy: [
+                    { berthName: 'OB-2', vesselName: 'm.v COMMON HORIZON', size: 'Large' },
+                    { berthName: 'C.TERMIN', vesselName: 'm.v SAFINAH', size: 'Medium' },
+                    { berthName: 'VGCB', vesselName: 'm.v THEODORE JR', size: 'Large' },
+                    { berthName: 'OSTT', vesselName: 'm.t SWARNA KRISHNA', size: 'Large' },
+                    { berthName: 'CB-3', vesselName: 'm.v PAC SCHEDAR', size: 'Small' },
+                    { berthName: 'EQ-1', vesselName: 'm.v SARAH OLDENDORFF', size: 'Large' },
+                    { berthName: 'EQ-3', vesselName: 'm.v HERMES', size: 'Medium' },
+                    { berthName: 'EQ-4', vesselName: 'm.v PIONEER KIRA', size: 'Small' },
+                    { berthName: 'EQ-6', vesselName: 'm.v KIRAN AMERICA', size: 'Medium' },
+                    { berthName: 'EQ-9', vesselName: 'm.v NEW GALAXY', size: 'Medium' },
+                    { berthName: 'WQ-1', vesselName: 'm.v FLAG EVI', size: 'Small' },
+                    { berthName: 'WQ-2', vesselName: 'm.v ENDEAVOR', size: 'Medium' },
+                    { berthName: 'WQ-3', vesselName: 'm.v SUNNY FORTUNE', size: 'Medium' },
+                    { berthName: 'WQ-4', vesselName: 'm.v JIN HAI ZHENG', size: 'Small' },
+                    { berthName: 'WQ-5', vesselName: 'm.v YIN NENG', size: 'Medium' },
+                    { berthName: 'WQ-6', vesselName: 'm.v JABAL SAMHAN', size: 'Large' },
+                    { berthName: 'WQ-7', vesselName: 'm.v ILIA', size: 'Large' },
+                    { berthName: 'WQ-8', vesselName: 'm.v STAR HAMBURG', size: 'Medium' },
+                    { berthName: 'OR-1', vesselName: 'm.t ZHONG CHI', size: 'Medium' },
+                    { berthName: 'FB', vesselName: 'm.v AMOY PROGRESS', size: 'Medium' }
+                ],
+                waiting: [
+                    { name: 'm.v JAL KAMADHENU', tonnes: 75000, arrivalStr: '27-Sep-2025 08:00' },
+                    { name: 'm.t ASPHALT EXPRSS', tonnes: 6000, arrivalStr: '27-Sep-2025 05:22' },
+                    { name: 'm.v MONA LISA', tonnes: 32000, arrivalStr: '27-Sep-2025 02:50' },
+                    { name: 'm.v CHIPOL CHANGAN', tonnes: 13000, arrivalStr: '27-Sep-2025 15:00'},
+                    { name: 'm.t DESH VISHAL', tonnes: 261261, arrivalStr: '27-Sep-2025 15:00'},
+                    { name: 'm.t A R G', tonnes: 9000, arrivalStr: '27-Sep-2025 18:00'}
+                ]
+            },
+            28: {
+                occupancy: [
+                     { berthName: 'OB-1', vesselName: 'm.v JAL KAMADHENU', size: 'Large' },
+                     { berthName: 'OB-2', vesselName: 'm.v COMMON HORIZON', size: 'Large' },
+                     { berthName: 'C.TERMIN', vesselName: 'm.v SAFINAH', size: 'Medium' },
+                     { berthName: 'VGCB', vesselName: 'm.v RED ORCHID', size: 'Large' },
+                     { berthName: 'OSTT', vesselName: 'm.t SWARNA KRISHNA', size: 'Large' },
+                     { berthName: 'EQ-1', vesselName: 'm.v SARAH OLDENDORFF', size: 'Large' },
+                     { berthName: 'EQ-3', vesselName: 'm.v HERMES', size: 'Medium' },
+                     { berthName: 'EQ-4', vesselName: 'm.v PIONEER KIRA', size: 'Small' },
+                     { berthName: 'EQ-6', vesselName: 'm.v KIRAN AMERICA', size: 'Medium' },
+                     { berthName: 'WQ-1', vesselName: 'm.v FLAG EVI', size: 'Small' },
+                     { berthName: 'WQ-2', vesselName: 'm.v ENDEAVOR', size: 'Medium' },
+                     { berthName: 'WQ-3', vesselName: 'm.v SUNNY FORTUNE', size: 'Medium' },
+                     { berthName: 'WQ-4', vesselName: 'm.v JIN HAI ZHENG', size: 'Small' },
+                     { berthName: 'WQ-5', vesselName: 'm.v YIN NENG', size: 'Medium' },
+                     { berthName: 'WQ-6', vesselName: 'm.v JABAL SAMHAN', size: 'Large' },
+                     { berthName: 'WQ-7', vesselName: 'm.v ILIA', size: 'Large' },
+                     { berthName: 'WQ-8', vesselName: 'm.v STAR HAMBURG', size: 'Medium' },
+                     { berthName: 'OR-1', vesselName: 'm.t ZHONG CHI', size: 'Medium' },
+                     { berthName: 'OR-3', vesselName: 'm.t ASPHALT EXPRESS', size: 'Small' },
+                     { berthName: 'FB', vesselName: 'm.v AMOY PROGRESS', size: 'Medium' }
+                ],
+                waiting: [
+                    { name: 'm.t ALPINE LIGHT', tonnes: 34650, arrivalStr: '28-Sep-2025 01:45' },
+                    { name: 'm.v PAC CAPELLA', tonnes: 8240, arrivalStr: '28-Sep-2025 05:56' },
+                    { name: 'm.t AL SHAFFIAH', tonnes: 11923, arrivalStr: '28-Sep-2025 10:00' },
+                    { name: 'm.v WAN HAI 367', tonnes: 21500, arrivalStr: '28-Sep-2025 09:00' },
+                    { name: 'm.v GSL MELINA', tonnes: 24000, arrivalStr: '28-Sep-2025 15:00' }
+                ]
+            },
+            29: {
+                occupancy: [
+                    { berthName: 'OB-1', vesselName: 'm.v JAL KAMADHENU', size: 'Large' },
+                    { berthName: 'C.TERMIN', vesselName: 'm.v SAFINAH', size: 'Medium' },
+                    { berthName: 'VGCB', vesselName: 'm.v RED ORCHID', size: 'Large' },
+                    { berthName: 'LPG', vesselName: 'LPG/C. GAS VIRGO', size: 'Small' },
+                    { berthName: 'CB-2', vesselName: 'm.v WAN HAI 367', size: 'Medium' },
+                    { berthName: 'CB-3', vesselName: 'm.v GSL MELINA', size: 'Large' },
+                    { berthName: 'EQ-1', vesselName: 'm.v SARAH OLDENDORFF', size: 'Large' },
+                    { berthName: 'EQ-3', vesselName: 'm.v HERMES', size: 'Medium' },
+                    { berthName: 'EQ-4', vesselName: 'm.v PIONEER KIRA', size: 'Small' },
+                    { berthName: 'EQ-6', vesselName: 'm.v KIRAN AMERICA', size: 'Medium' },
+                    { berthName: 'WQ-1', vesselName: 'm.v FLAG EVI', size: 'Small' },
+                    { berthName: 'WQ-2', vesselName: 'm.v ENDEAVOR', size: 'Medium' },
+                    { berthName: 'WQ-3', vesselName: 'm.v NORD UTOPIA', size: 'Medium' },
+                    { berthName: 'WQ-4', vesselName: 'm.v CHIPOL CHANGAN', size: 'Small' },
+                    { berthName: 'WQ-5', vesselName: 'm.v INLACO EXPRESS', size: 'Medium' },
+                    { berthName: 'WQ-6', vesselName: 'm.v JABAL SAMHAN', size: 'Large' },
+                    { berthName: 'WQ-7', vesselName: 'm.v ILIA', size: 'Large' },
+                    { berthName: 'WQ-8', vesselName: 'm.v STAR HAMBURG', size: 'Medium' },
+                    { berthName: 'OR-1', vesselName: 'm.t ALPINE LIGHT', size: 'Medium' },
+                    { berthName: 'OR-3', vesselName: 'm.t A R G', size: 'Medium' }
+                ],
+                waiting: [
+                    { name: 'm.v GCL GANGA', tonnes: 105000, arrivalStr: '29-Sep-2025 15:00' },
+                    { name: 'm.t GLBS MAGIC', tonnes: 54390, arrivalStr: '29-Sep-2025 00:13' },
+                    { name: 'm.v SANTA IRINI [GLP]', tonnes: 32872, arrivalStr: '29-Sep-2025 18:00' },
+                    { name: 'm.v HAPPY HERO', tonnes: 8233, arrivalStr: '29-Sep-2025 12:00' },
+                    { name: 'm.v CONTSHIP ANA II', tonnes: 18000, arrivalStr: '29-Sep-2025 10:00' },
+                    { name: 'm.t STI DUCHESSA', tonnes: 6797, arrivalStr: '29-Sep-2025 19:00' },
+                    { name: 'LPG/C SEARAMBLER', tonnes: 5000, arrivalStr: '29-Sep-2025 11:30' }
+                ]
+            }
+        };
+
+        const allBerthNames = [...new Set(Object.keys(berthSpecifications))];
+
+        // DATA STRUCTURES & INITIAL STATE
+        let berths = [];
+        let vessels = [];
+        let simulationTime;
+        let currentDay = 29; // Start with the 29th
+
+        // CORE FUNCTIONS
+
+        function init() {
+            setupDay(currentDay);
+            
+            document.getElementById('day27Btn').addEventListener('click', () => setupDay(27));
+            document.getElementById('day28Btn').addEventListener('click', () => setupDay(28));
+            document.getElementById('day29Btn').addEventListener('click', () => setupDay(29));
+
+            document.getElementById('resetDataBtn').addEventListener('click', () => setupDay(currentDay));
+            document.getElementById('runOptimizationBtn').addEventListener('click', () => {
+                simulationTime.setHours(simulationTime.getHours() + 1);
+                runOptimization();
+                renderDashboard();
+            });
+        }
+        
+        function setupDay(day) {
+            currentDay = day;
+            simulationTime = new Date(`2025-09-${day}T06:00:00`);
+            
+            document.querySelectorAll('.date-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`day${day}Btn`).classList.add('active');
+
+            setupInitialState();
+            renderDashboard();
+        }
+
+        function setupInitialState() {
+            vessels = [];
+            berths = [];
+            
+            const dayData = portDataByDay[currentDay];
+            
+            // 1. Create all berths from specifications
+            allBerthNames.forEach((name, index) => {
+                const spec = berthSpecifications[name] || { loa: 200, draft: 12 }; // Default spec
+                berths.push({
+                    id: index + 1, name: name, loa: spec.loa, draft: spec.draft,
+                    isOccupied: false, occupiedBy: null, freeAfter: null,
+                });
+            });
+
+            // 2. Set occupancy for the current day
+            dayData.occupancy.forEach((occupiedBerthData, index) => {
+                const berth = berths.find(b => b.name === occupiedBerthData.berthName);
+                if (berth) {
+                    berth.isOccupied = true;
+                    const departureTime = new Date(simulationTime.getTime() + (Math.random() * 12 + 4) * 60 * 60 * 1000);
+                    const vessel = createVessel(occupiedBerthData.vesselName, 50000); // Assume medium tonnes for berthed
+                    
+                    vessel.id = `V-preberthed-${currentDay}-${index}`;
+                    vessel.status = 'Berthed';
+                    vessel.assignedBerthId = berth.id;
+                    vessel.arrivalTime = new Date(simulationTime.getTime() - 8 * 60 * 60 * 1000);
+                    vessel.berthingTime = new Date(simulationTime.getTime() - 7 * 60 * 60 * 1000);
+                    vessel.departureTime = departureTime;
+
+                    vessels.push(vessel);
+                    berth.occupiedBy = vessel.id;
+                    berth.freeAfter = departureTime;
+                }
+            });
+
+            // 3. Load waiting vessels for the current day
+            const waitingVesselsData = JSON.parse(JSON.stringify(dayData.waiting));
+            waitingVesselsData.forEach((v, i) => {
+                const newVessel = createVessel(v.name, v.tonnes);
+                newVessel.id = `V-waiting-${currentDay}-${i}`;
+                newVessel.arrivalTime = new Date(v.arrivalStr);
+                vessels.push(newVessel);
+            });
+        }
+        
+        function createVessel(name, tonnes) {
+            let size, loa, draft;
+            if (tonnes < 20000) {
+                size = 'Small';
+                loa = 100 + Math.random() * 60; // 100-160m
+                draft = 8 + Math.random() * 2;   // 8-10m
+            } else if (tonnes < 80000) {
+                size = 'Medium';
+                loa = 161 + Math.random() * 70; // 161-230m
+                draft = 10.1 + Math.random() * 3; // 10.1-13.1m
+            } else {
+                size = 'Large';
+                loa = 231 + Math.random() * 70; // 231-300m
+                draft = 13.2 + Math.random() * 3; // 13.2-16.2m
+            }
+            return {
+                name: name, size: size,
+                loa: parseFloat(loa.toFixed(2)), draft: parseFloat(draft.toFixed(2)),
+                berthingTime: null, departureTime: null,
+                status: 'Waiting', assignedBerthId: null
+            };
+        }
+
+        function runOptimization() {
+            berths.forEach(b => {
+                if (b.isOccupied && b.freeAfter && b.freeAfter < simulationTime) {
+                    const departedVessel = vessels.find(v => v.id === b.occupiedBy);
+                    if (departedVessel) departedVessel.status = 'Departed';
+                    b.isOccupied = false; b.occupiedBy = null; b.freeAfter = null;
+                }
+            });
+
+            const vesselsToAssign = vessels
+                .filter(v => v.status === 'Waiting' && v.arrivalTime <= simulationTime)
+                .sort((a, b) => a.arrivalTime - b.arrivalTime);
+
+            const availableBerths = berths.filter(b => !b.isOccupied);
+
+            for (const vessel of vesselsToAssign) {
+                let assignedBerth = null;
+                for (let i = 0; i < availableBerths.length; i++) {
+                    const berth = availableBerths[i];
+                    if (isCompatible(vessel, berth)) {
+                        assignedBerth = berth;
+                        availableBerths.splice(i, 1);
+                        break;
+                    }
+                }
+
+                if (assignedBerth) {
+                    vessel.berthingTime = new Date(simulationTime);
+                    const serviceDuration = (Math.floor(Math.random() * 8) + 4) * 60 * 60 * 1000;
+                    vessel.departureTime = new Date(vessel.berthingTime.getTime() + serviceDuration);
+                    vessel.status = 'Berthed';
+                    vessel.assignedBerthId = assignedBerth.id;
+                    const originalBerth = berths.find(b => b.id === assignedBerth.id);
+                    originalBerth.isOccupied = true;
+                    originalBerth.occupiedBy = vessel.id;
+                    originalBerth.freeAfter = vessel.departureTime;
+                }
+            }
+        }
+        
+        function isCompatible(vessel, berth) {
+            return vessel.loa <= berth.loa && vessel.draft <= berth.draft;
+        }
+
+        // UI RENDERING FUNCTIONS
+        function renderDashboard() {
+            renderBerthGrid();
+            renderWaitingList();
+            renderAnalytics();
+            renderAllotmentPlan();
+        }
+
+        function renderBerthGrid() {
+            const grid = document.getElementById('berth-grid');
+            grid.innerHTML = '';
+            berths.sort((a,b)=> a.id - b.id).forEach(berth => {
+                const isOccupied = berth.isOccupied;
+                const vessel = isOccupied ? vessels.find(v => v.id === berth.occupiedBy) : null;
+                const statusColor = isOccupied ? 'bg-red-100 border-red-400' : 'bg-green-100 border-green-400';
+                const textColor = isOccupied ? 'text-red-800' : 'text-green-800';
+                
+                const card = document.createElement('div');
+                card.className = `p-4 rounded-lg border-2 ${statusColor} text-center flex flex-col justify-between min-h-[180px]`;
+                
+                let content = `
+                    <div class="font-bold text-lg text-slate-800">${berth.name}</div>
+                    <div class="text-sm text-slate-600 mb-2">LOA: ${berth.loa}m | Draft: ${berth.draft}m</div>
+                    <div class="font-semibold text-lg ${textColor}">${isOccupied ? 'OCCUPIED' : 'AVAILABLE'}</div>`;
+
+                if (isOccupied && vessel) {
+                    content += `<div class="mt-2 pt-2 border-t ${isOccupied ? 'border-red-300' : 'border-green-300'}">
+                                    <div class="text-sm font-semibold text-slate-700">${vessel.name}</div>
+                                    <div class="text-xs text-slate-500">(LOA: ${vessel.loa}m, Draft: ${vessel.draft}m)</div>
+                                    <div class="text-xs text-slate-500 mt-1">Free after: ${berth.freeAfter.toLocaleTimeString()}</div>
+                                </div>`;
+                }
+                card.innerHTML = content;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderWaitingList() {
+            const list = document.getElementById('waiting-vessels-list');
+            list.innerHTML = '';
+            const waitingVessels = vessels.filter(v => v.status === 'Waiting').sort((a,b)=> a.arrivalTime - b.arrivalTime);
+
+            if (waitingVessels.length === 0) {
+                list.innerHTML = `<p class="text-slate-500">No vessels are currently waiting.</p>`;
+                return;
+            }
+
+            waitingVessels.forEach(vessel => {
+                const item = document.createElement('div');
+                item.className = 'p-3 bg-slate-100 rounded-md';
+                item.innerHTML = `
+                    <p class="font-semibold text-slate-800">${vessel.name}</p>
+                    <p class="text-sm text-slate-600">
+                        LOA: ${vessel.loa}m | Draft: ${vessel.draft}m
+                    </p>
+                     <p class="text-sm text-slate-600">
+                        Arrival: ${vessel.arrivalTime.toLocaleString()}
+                    </p>
+                `;
+                list.appendChild(item);
+            });
+        }
+        
+        function renderAnalytics() {
+            const content = document.getElementById('analytics-content');
+            const berthedVessels = vessels.filter(v => v.status === 'Berthed');
+            const waitingCount = vessels.filter(v => v.status === 'Waiting').length;
+
+            let totalWaitingTimeMs = 0;
+            const newlyBerthedVessels = berthedVessels.filter(v => v.id && v.id.startsWith(`V-waiting-${currentDay}`));
+            newlyBerthedVessels.forEach(v => {
+                const wait = Math.max(0, v.berthingTime - v.arrivalTime);
+                totalWaitingTimeMs += wait;
+            });
+
+            const avgWaitingTimeMins = newlyBerthedVessels.length > 0 ? Math.round((totalWaitingTimeMs / newlyBerthedVessels.length) / (1000 * 60)) : 0;
+            const totalWaitingTimeHours = (totalWaitingTimeMs / (1000 * 60 * 60)).toFixed(2);
+
+            content.innerHTML = `
+                <p><span class="font-bold">Total Vessels:</span> ${vessels.length}</p>
+                <p><span class="font-bold">Vessels Berthed:</span> ${berthedVessels.length}</p>
+                <p><span class="font-bold">Vessels Waiting:</span> ${waitingCount}</p>
+                <p class="mt-4"><span class="font-bold text-blue-700">Average Wait Time (Optimized):</span> 
+                   <span class="text-blue-700 font-semibold">${avgWaitingTimeMins} minutes</span>
+                </p>
+                <p><span class="font-bold text-red-700">Total Wait Time (Objective Cost):</span> 
+                   <span class="text-red-700 font-semibold">${totalWaitingTimeHours} hours</span>
+                </p>
+                <p class="text-sm text-slate-500 mt-2">Current Sim Time: ${simulationTime.toLocaleString()}</p>`;
+        }
+
+        function renderAllotmentPlan() {
+            const tbody = document.getElementById('allotment-plan-body');
+            tbody.innerHTML = '';
+            const optimizedVessels = vessels
+                .filter(v => v.status === 'Berthed' && v.id && v.id.startsWith(`V-waiting-${currentDay}`))
+                .sort((a, b) => a.berthingTime - b.berthingTime);
+
+            if (optimizedVessels.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center text-slate-500 py-4">Run optimization to generate an allotment plan for waiting vessels.</td></tr>`;
+                return;
+            }
+
+            optimizedVessels.forEach(vessel => {
+                const berth = berths.find(b => b.id === vessel.assignedBerthId);
+                const waitTimeMs = Math.max(0, vessel.berthingTime - vessel.arrivalTime);
+                const waitTimeHours = (waitTimeMs / (1000 * 60 * 60)).toFixed(2);
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">${vessel.name}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">${berth ? berth.name : 'N/A'}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">${vessel.arrivalTime.toLocaleString()}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">${vessel.berthingTime.toLocaleString()}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-red-600">${waitTimeHours} hours</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // START THE SIMULATION
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
+
