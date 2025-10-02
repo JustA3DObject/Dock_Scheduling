@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-torial-overlay">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartPort - Visakhapatnam Port Authority</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -102,11 +102,144 @@
         .theme-light .bg-slate-100 {
             background-color: #f3f4f6;
         }
+        
+        /* ===== MODIFIED & NEW TUTORIAL STYLES ===== */
+        .tutorial-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+            pointer-events: none; /* Allow clicks on highlighted element if needed, but card needs pointer-events: auto */
+        }
+        
+        .tutorial-highlight-box {
+            position: absolute;
+            border-radius: 12px;
+            border: 3px solid rgba(79, 70, 229, 0.9);
+            box-sizing: border-box;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .tutorial-highlight-box.visible {
+            opacity: 1;
+            box-shadow: 0 0 0 9999px rgba(17, 24, 39, 0.85), 0 0 24px 8px rgba(79, 70, 229, 0.5);
+        }
+        
+        .tutorial-card {
+            background: white;
+            border-radius: 12px;
+            max-width: 450px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            position: absolute;
+            z-index: 10000;
+            pointer-events: auto; /* Make the card clickable */
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+        }
+        
+        .tutorial-card.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        
+        .dark .tutorial-card {
+            background: #1f2937;
+            color: #f9fafb;
+        }
+        
+        .tutorial-step {
+            display: none;
+        }
+        
+        .tutorial-step.active {
+            display: block;
+        }
+        
+        .tutorial-progress {
+            height: 4px;
+            background-color: #e5e7eb;
+            border-radius: 2px;
+            margin: 15px 0;
+        }
+        
+        .tutorial-progress-bar {
+            height: 100%;
+            background-color: #4f46e5;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        
+        .tutorial-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body class="min-h-screen">
 
     <div class="background-blur"></div>
+
+    <div id="tutorial-overlay" class="tutorial-overlay modal-hidden">
+        <div id="tutorial-highlight-box" class="tutorial-highlight-box"></div>
+        <div class="tutorial-card p-6">
+            <div id="tutorial-step-1" class="tutorial-step active">
+                <h2 class="text-2xl font-bold mb-4 text-slate-800 dark:text-slate-100">Welcome to SmartPort</h2>
+                <p class="text-slate-600 dark:text-slate-300 mb-4">This interactive tutorial will guide you through the main features of the port management system.</p>
+                <p class="text-slate-600 dark:text-slate-300">You'll learn how to monitor real-time port activity, run simulations, and optimize berth assignments.</p>
+            </div>
+            
+            <div id="tutorial-step-2" class="tutorial-step">
+                <h2 class="text-2xl font-bold mb-4 text-slate-800 dark:text-slate-100">Real-time Data & Weather</h2>
+                <p class="text-slate-600 dark:text-slate-300 mb-4">Monitor live port operations with real-time vessel tracking and weather conditions.</p>
+                <p class="text-slate-600 dark:text-slate-300">The system automatically updates vessel positions and weather data to help you make informed decisions.</p>
+            </div>
+            
+            <div id="tutorial-step-3" class="tutorial-step">
+                <h2 class="text-2xl font-bold mb-4 text-slate-800 dark:text-slate-100">Simulation Controls</h2>
+                <p class="text-slate-600 dark:text-slate-300 mb-4">Use the day selector to navigate between different simulation dates.</p>
+                <p class="text-slate-600 dark:text-slate-300">Run the daily simulation to see how the algorithm optimizes berth assignments in real-time.</p>
+            </div>
+            
+            <div id="tutorial-step-4" class="tutorial-step">
+                <h2 class="text-2xl font-bold mb-4 text-slate-800 dark:text-slate-100">Port Activity & Analytics</h2>
+                <p class="text-slate-600 dark:text-slate-300 mb-4">Track all port operations through the activity log and performance analytics.</p>
+                <p class="text-slate-600 dark:text-slate-300">Monitor vessels awaiting berthing and review the optimal berth allotment plan.</p>
+            </div>
+            
+            <div id="tutorial-step-5" class="tutorial-step">
+                <h2 class="text-2xl font-bold mb-4 text-slate-800 dark:text-slate-100">Berth Status Dashboard</h2>
+                <p class="text-slate-600 dark:text-slate-300 mb-4">The main dashboard shows the current status of all berths in the port.</p>
+                <p class="text-slate-600 dark:text-slate-300">Click on any berth card to view its complete service history and current vessel assignment.</p>
+            </div>
+            
+            <div id="tutorial-step-6" class="tutorial-step">
+                <h2 class="text-2xl font-bold mb-4 text-slate-800 dark:text-slate-100">You're Ready to Start!</h2>
+                <p class="text-slate-600 dark:text-slate-300 mb-4">You can always restart this tutorial by clicking the "Show Tutorial" button in the controls section.</p>
+                <p class="text-slate-600 dark:text-slate-300">Now explore the system and see how the algorithm optimizes port operations for Visakhapatnam Port Authority.</p>
+            </div>
+            
+            <div class="tutorial-progress">
+                <div id="tutorial-progress-bar" class="tutorial-progress-bar" style="width: 16.66%"></div>
+            </div>
+            
+            <div class="tutorial-navigation">
+                <button id="tutorial-prev" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition duration-300 hidden">Previous</button>
+                <button id="tutorial-skip" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition duration-300">Skip Tutorial</button>
+                <button id="tutorial-next" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-300">Next</button>
+            </div>
+        </div>
+    </div>
 
     <div class="container mx-auto p-4 md:p-8">
         
@@ -130,8 +263,7 @@
 
         <div class="flex flex-col lg:flex-row gap-8">
             <aside class="lg:w-1/3 xl:w-1/4 space-y-6">
-                <!-- Real-time Data Controls Card -->
-                <div class="glass-card p-6 rounded-2xl">
+                <div id="tutorial-realtime-card" class="glass-card p-6 rounded-2xl">
                     <h2 class="text-xl font-bold mb-4 border-b border-slate-300 dark:border-slate-700 pb-2">Real-time Data</h2>
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
@@ -147,13 +279,12 @@
                         <div class="pt-2 border-t border-slate-200 dark:border-slate-700">
                             <div class="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
                                 <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                                <span>Real-time data</span>
+                                <span>Real-time data integration ready</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Weather Information Card -->
                 <div class="glass-card p-6 rounded-2xl">
                     <h2 class="text-xl font-bold mb-4 border-b border-slate-300 dark:border-slate-700 pb-2">Weather Conditions</h2>
                     <div id="weather-content" class="space-y-3">
@@ -164,7 +295,7 @@
                     </div>
                 </div>
                 
-                <div class="glass-card p-6 rounded-2xl">
+                <div id="tutorial-controls-card" class="glass-card p-6 rounded-2xl">
                     <h2 class="text-xl font-bold mb-4 border-b border-slate-300 dark:border-slate-700 pb-2">Controls</h2>
                     
                     <div class="mb-5">
@@ -180,6 +311,12 @@
                     </div>
                     
                     <div class="space-y-3">
+                        <button id="show-tutorial-btn" class="w-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 font-semibold py-3 px-4 rounded-lg hover:bg-indigo-200 dark:hover:bg-indigo-800/50 transition duration-300 flex items-center justify-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                            </svg>
+                            Show Tutorial
+                        </button>
                         <button id="resetDataBtn" class="w-full bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold py-3 px-4 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition duration-300">
                             Reset Day
                         </button>
@@ -198,7 +335,7 @@
                     </div>
                 </div>
 
-                <div class="glass-card p-6 rounded-2xl">
+                <div id="tutorial-activity-card" class="glass-card p-6 rounded-2xl">
                     <h2 class="text-xl font-bold mb-4 border-b border-slate-300 dark:border-slate-700 pb-2">Port Activity Log</h2>
                     <div id="activity-log" class="space-y-3 max-h-96 overflow-y-auto pr-2"></div>
                 </div>
@@ -215,7 +352,6 @@
             </aside>
 
             <main class="lg:w-2/3 xl:w-3/4 space-y-8">
-                <!-- Real-time Vessels Overview Card -->
                 <div class="glass-card p-6 rounded-2xl">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Real-time Port Overview</h2>
@@ -270,7 +406,6 @@
                         </div>
                     </div>
 
-                    <!-- Real-time Vessels Table -->
                     <div class="mt-6">
                         <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-4">Current Port Activity</h3>
                         <div class="overflow-x-auto">
@@ -295,9 +430,9 @@
                     </div>
                 </div>
 
-                 <div class="glass-card p-6 rounded-2xl">
-                     <h2 class="text-2xl font-bold mb-6 text-center text-slate-800 dark:text-slate-100">Operations Dashboard: Berth Status</h2>
-                     <div id="berth-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"></div>
+                 <div id="tutorial-berth-grid" class="glass-card p-6 rounded-2xl">
+                       <h2 class="text-2xl font-bold mb-6 text-center text-slate-800 dark:text-slate-100">Operations Dashboard: Berth Status</h2>
+                       <div id="berth-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"></div>
                  </div>
 
                 <div class="glass-card p-6 rounded-2xl">
@@ -321,7 +456,6 @@
         </div>
     </div>
 
-    <!-- Berth History Modal -->
     <div id="berth-history-modal" class="modal-hidden fixed inset-0 z-50 flex items-center justify-center p-4 transition-opacity duration-300">
         <div id="modal-backdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm"></div>
         <div class="glass-card w-full max-w-2xl rounded-2xl z-10 transform scale-95 transition-transform duration-300">
@@ -333,19 +467,162 @@
                     </button>
                 </div>
                 <ul id="modal-history-list" class="space-y-3 max-h-[60vh] overflow-y-auto pr-2">
-                    <!-- History items will be injected here -->
-                </ul>
+                    </ul>
             </div>
         </div>
     </div>
 
     <script>
+        // ===== MODIFIED TUTORIAL FUNCTIONALITY =====
+        let currentTutorialStep = 1;
+        const totalTutorialSteps = 6;
+        let tutorialActive = false;
+        
+        function checkFirstVisit() {
+            if (!localStorage.getItem('berthTutorialCompleted')) {
+                setTimeout(() => {
+                    startTutorial();
+                }, 1000);
+            }
+        }
+        
+        function startTutorial() {
+            tutorialActive = true;
+            currentTutorialStep = 1;
+            
+            const overlay = document.getElementById('tutorial-overlay');
+            const tutorialCard = overlay.querySelector('.tutorial-card');
+            
+            tutorialCard.classList.remove('visible');
+            document.getElementById('tutorial-highlight-box').classList.remove('visible');
+        
+            overlay.classList.remove('modal-hidden');
+            overlay.style.display = 'block';
+            overlay.style.opacity = 1;
+        
+            updateTutorialStep();
+        }
+        
+        function closeTutorial() {
+            tutorialActive = false;
+            const overlay = document.getElementById('tutorial-overlay');
+            
+            overlay.style.opacity = 0;
+            
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                overlay.classList.add('modal-hidden');
+            }, 300);
+            
+            localStorage.setItem('berthTutorialCompleted', 'true');
+        }
+        
+        function updateTutorialStep() {
+            for (let i = 1; i <= totalTutorialSteps; i++) {
+                document.getElementById(`tutorial-step-${i}`).classList.remove('active');
+            }
+            document.getElementById(`tutorial-step-${currentTutorialStep}`).classList.add('active');
+            
+            document.getElementById('tutorial-progress-bar').style.width = `${(currentTutorialStep / totalTutorialSteps) * 100}%`;
+            
+            const prevButton = document.getElementById('tutorial-prev');
+            const nextButton = document.getElementById('tutorial-next');
+            const skipButton = document.getElementById('tutorial-skip');
+            
+            prevButton.classList.toggle('hidden', currentTutorialStep === 1);
+            skipButton.classList.toggle('hidden', currentTutorialStep === totalTutorialSteps);
+            nextButton.textContent = currentTutorialStep === totalTutorialSteps ? 'Finish' : 'Next';
+            
+            highlightTutorialElement(currentTutorialStep);
+        }
+        
+        function highlightTutorialElement(step) {
+            const highlightBox = document.getElementById('tutorial-highlight-box');
+            const tutorialCard = document.querySelector('#tutorial-overlay .tutorial-card');
+
+            tutorialCard.classList.remove('visible');
+        
+            let elementToHighlightId = null;
+            
+            switch(step) {
+                case 2: elementToHighlightId = 'tutorial-realtime-card'; break;
+                case 3: elementToHighlightId = 'tutorial-controls-card'; break;
+                case 4: elementToHighlightId = 'tutorial-activity-card'; break;
+                case 5: elementToHighlightId = 'tutorial-berth-grid'; break;
+            }
+            
+            const elementToHighlight = elementToHighlightId ? document.getElementById(elementToHighlightId) : null;
+        
+            if (elementToHighlight) {
+                elementToHighlight.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+                
+                setTimeout(() => {
+                    const rect = elementToHighlight.getBoundingClientRect();
+                    
+                    highlightBox.style.width = `${rect.width + 12}px`;
+                    highlightBox.style.height = `${rect.height + 12}px`;
+                    highlightBox.style.top = `${rect.top - 6}px`;
+                    highlightBox.style.left = `${rect.left - 6}px`;
+                    highlightBox.classList.add('visible');
+
+                    const cardRect = tutorialCard.getBoundingClientRect();
+                    let cardTop, cardLeft;
+                    const spaceBelow = window.innerHeight - rect.bottom;
+                    const spaceAbove = rect.top;
+
+                    if (spaceBelow > tutorialCard.offsetHeight + 20) {
+                        cardTop = rect.bottom + 15;
+                    } else if (spaceAbove > tutorialCard.offsetHeight + 20) {
+                        cardTop = rect.top - tutorialCard.offsetHeight - 15;
+                    } else {
+                        cardTop = (window.innerHeight - tutorialCard.offsetHeight) / 2;
+                    }
+                    
+                    cardLeft = (window.innerWidth - tutorialCard.offsetWidth) / 2;
+                    cardLeft = Math.max(10, Math.min(cardLeft, window.innerWidth - tutorialCard.offsetWidth - 10));
+
+                    tutorialCard.style.top = `${cardTop}px`;
+                    tutorialCard.style.left = `${cardLeft}px`;
+                    tutorialCard.style.transform = '';
+                    tutorialCard.classList.add('visible');
+                }, 350);
+        
+            } else {
+                highlightBox.classList.remove('visible');
+                setTimeout(() => {
+                    tutorialCard.style.top = '50%';
+                    tutorialCard.style.left = '50%';
+                    tutorialCard.style.transform = 'translate(-50%, -50%)';
+                    tutorialCard.classList.add('visible');
+                }, 150);
+            }
+        }
+        
+        document.getElementById('tutorial-next').addEventListener('click', () => {
+            if (currentTutorialStep < totalTutorialSteps) {
+                currentTutorialStep++;
+                updateTutorialStep();
+            } else {
+                closeTutorial();
+            }
+        });
+        
+        document.getElementById('tutorial-prev').addEventListener('click', () => {
+            if (currentTutorialStep > 1) {
+                currentTutorialStep--;
+                updateTutorialStep();
+            }
+        });
+        
+        document.getElementById('tutorial-skip').addEventListener('click', closeTutorial);
+        
+        document.getElementById('show-tutorial-btn').addEventListener('click', startTutorial);
+
         //  THEME TOGGLE SCRIPT 
         const themeToggle = document.getElementById('theme-toggle');
         const themeIconLight = document.getElementById('theme-icon-light');
         const themeIconDark = document.getElementById('theme-icon-dark');
 
-        // Add theme class to body for better contrast control
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
             document.body.classList.add('theme-dark');
@@ -561,20 +838,16 @@
             vesselsWaiting: 0
         };
 
-        // Track ongoing vessel services across days
         let ongoingVesselServices = {};
 
         // ===== REAL-TIME DATA INTEGRATION =====
         
-        // Configuration
-        const REAL_TIME_UPDATE_INTERVAL = 300000; // 5 minutes
-        const WEATHER_UPDATE_INTERVAL = 1800000; // 30 minutes
+        const REAL_TIME_UPDATE_INTERVAL = 300000; 
+        const WEATHER_UPDATE_INTERVAL = 1800000; 
         
-        // API Configuration (You'll need to obtain these keys)
-        const OPENWEATHER_API_KEY = 'YOUR_OPENWEATHER_API_KEY'; // Get from https://openweathermap.org/api
-        const VESSELFINDER_API_KEY = 'YOUR_VESSELFINDER_API_KEY'; // Get from https://api.vesselfinder.com/
+        const OPENWEATHER_API_KEY = 'YOUR_OPENWEATHER_API_KEY'; 
+        const VESSELFINDER_API_KEY = 'YOUR_VESSELFINDER_API_KEY'; 
         
-        // Real-time data state
         let realTimeData = {
             vesselsInPort: [],
             expectedArrivals: [],
@@ -583,20 +856,13 @@
             lastUpdate: null
         };
 
-        // Initialize real-time data integration
         function initRealTimeIntegration() {
-            // Load initial data
             loadRealTimeData();
-            
-            // Set up periodic updates
             setInterval(loadRealTimeData, REAL_TIME_UPDATE_INTERVAL);
             setInterval(loadWeatherData, WEATHER_UPDATE_INTERVAL);
-            
-            // Set up manual refresh button
             document.getElementById('refreshRealTimeData').addEventListener('click', loadRealTimeData);
         }
 
-        // Load all real-time data
         async function loadRealTimeData() {
             try {
                 updateLastUpdatedTime();
@@ -609,17 +875,10 @@
             }
         }
 
-        // Load weather data from OpenWeatherMap API
         async function loadWeatherData() {
-            // For Visakhapatnam coordinates
             const lat = 17.6871;
             const lon = 83.3007;
             
-            // Using demo data since API key is required
-            // In production, you would use:
-            // const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${OPENWEATHER_API_KEY}&units=metric`);
-            
-            // Demo weather data (replace with actual API call)
             realTimeData.weatherData = {
                 temperature: 28,
                 humidity: 75,
@@ -632,9 +891,7 @@
             renderWeatherData();
         }
 
-        // Load vessel data (using demo data - replace with actual VesselFinder API calls)
         async function loadVesselData() {
-            // Demo data based on VesselFinder structure
             realTimeData.vesselsInPort = [
                 { name: 'MV Ocean Carrier', status: 'In Port', size: '228×32m', time: '15:33', type: 'Container' },
                 { name: 'SSL Sabarimalai', status: 'In Port', size: '225×37m', time: '15:42', type: 'Bulk Carrier' },
@@ -652,14 +909,11 @@
             ];
         }
 
-        // Render real-time data to the UI
         function renderRealTimeData() {
-            // Update summary cards
             document.getElementById('vessels-in-port').textContent = realTimeData.vesselsInPort.length;
             document.getElementById('expected-arrivals').textContent = realTimeData.expectedArrivals.length;
             document.getElementById('recent-departures').textContent = realTimeData.recentDepartures.length;
             
-            // Render vessels table
             const vesselsBody = document.getElementById('real-time-vessels-body');
             vesselsBody.innerHTML = '';
             
@@ -687,7 +941,6 @@
             });
         }
 
-        // Render weather data
         function renderWeatherData() {
             const weatherContent = document.getElementById('weather-content');
             if (!realTimeData.weatherData) {
@@ -714,7 +967,6 @@
             `;
         }
 
-        // Update last updated time
         function updateLastUpdatedTime() {
             const now = new Date();
             realTimeData.lastUpdate = now;
@@ -722,7 +974,6 @@
                 now.toLocaleTimeString();
         }
 
-        // Show data error
         function showDataError(message) {
             const vesselsBody = document.getElementById('real-time-vessels-body');
             vesselsBody.innerHTML = `
@@ -745,16 +996,15 @@
             document.getElementById('runOptimizationBtn').addEventListener('click', startDailySimulation);
             document.getElementById('stopSimulationBtn').addEventListener('click', stopSimulation);
 
-            // Modal close listeners
             document.getElementById('modal-close-btn').addEventListener('click', closeBerthHistoryModal);
             document.getElementById('modal-backdrop').addEventListener('click', closeBerthHistoryModal);
             
-            // Initialize real-time data integration
             initRealTimeIntegration();
+            
+            checkFirstVisit();
         }
         
         function setupDay(day) {
-            // Stop any running simulation
             stopSimulation();
             
             currentDay = day;
@@ -762,7 +1012,6 @@
             const year = 2025;
             simulationTime = new Date(year, month, day, 6, 0, 0);
             
-            // Reset daily stats
             totalWaitTimeForDay = 0;
             totalTimeOptimizedForDay = 0;
             dailyStats = {
@@ -772,7 +1021,6 @@
                 vesselsWaiting: 0
             };
             
-            // Initialize or preserve ongoing services
             if (!ongoingVesselServices) {
                 ongoingVesselServices = {};
             }
@@ -792,7 +1040,6 @@
             
             const dayData = portDataByDay[currentDay];
             
-            // Initialize berths
             allBerthNames.forEach((name, index) => {
                 const spec = berthSpecifications[name] || { loa: 200, draft: 12 };
                 berths.push({ 
@@ -803,25 +1050,21 @@
                     isOccupied: false, 
                     occupiedBy: null, 
                     freeAfter: null,
-                    currentVessel: null  // Track current vessel for one-vessel-per-berth rule
+                    currentVessel: null 
                 });
                 if (!berthHistory[name]) berthHistory[name] = [];
             });
 
-            // Set up pre-berthed vessels - ENFORCING ONE VESSEL PER BERTH
             dayData.occupancy.forEach((occupiedBerthData, index) => {
                 const berth = berths.find(b => b.name === occupiedBerthData.berthName);
-                if (berth && !berth.isOccupied) {  // Only assign if berth is not already occupied
+                if (berth && !berth.isOccupied) { 
                     berth.isOccupied = true;
                     const vesselName = occupiedBerthData.vesselName;
                     
-                    // Check if this vessel was already in service from previous day
                     let departureTime;
                     if (ongoingVesselServices[vesselName]) {
-                        // Continue with existing service time
                         departureTime = ongoingVesselServices[vesselName];
                     } else {
-                        // Create new service time
                         const serviceHours = 8 + Math.random() * 24;
                         departureTime = new Date(simulationTime.getTime() + serviceHours * 60 * 60 * 1000);
                         ongoingVesselServices[vesselName] = departureTime;
@@ -838,7 +1081,7 @@
                     vessels.push(vessel);
                     berth.occupiedBy = vessel.id;
                     berth.freeAfter = departureTime;
-                    berth.currentVessel = vessel;  // Track current vessel
+                    berth.currentVessel = vessel; 
 
                     const isAlreadyInHistory = berthHistory[berth.name].some(rec => 
                         rec.vesselName === vessel.name && rec.status === 'Berthed' && 
@@ -855,7 +1098,6 @@
                 }
             });
 
-            // Set up waiting vessels
             const waitingVesselsData = JSON.parse(JSON.stringify(dayData.waiting));
             waitingVesselsData.forEach((v, i) => {
                 const newVessel = createVessel(v.name, v.tonnes);
@@ -893,13 +1135,11 @@
         }
 
         function startDailySimulation() {
-            // Disable run button, enable stop button
             document.getElementById('runOptimizationBtn').classList.add('hidden');
             document.getElementById('stopSimulationBtn').classList.remove('hidden');
             
             logActivity(`Daily simulation started. Running for 24 hours...`, 'start');
             
-            // Run simulation for 24 hours (24 steps of 1 hour each)
             let hoursSimulated = 0;
             const totalHours = 24;
             
@@ -910,17 +1150,15 @@
                     return;
                 }
                 
-                // Advance time by 1 hour
                 simulationTime.setHours(simulationTime.getHours() + 1);
                 runOptimization();
                 renderDashboard();
                 hoursSimulated++;
                 
-                // Update progress
-                if (hoursSimulated % 6 === 0) { // Log every 6 hours
+                if (hoursSimulated % 6 === 0) {
                     logActivity(`Simulation progress: ${hoursSimulated}/24 hours completed`, 'progress');
                 }
-            }, 1000); // Run every second for demo purposes
+            }, 1000);
         }
         
         function stopSimulation() {
@@ -929,7 +1167,6 @@
                 simulationInterval = null;
             }
             
-            // Re-enable run button, disable stop button
             document.getElementById('runOptimizationBtn').classList.remove('hidden');
             document.getElementById('stopSimulationBtn').classList.add('hidden');
             
@@ -937,7 +1174,6 @@
         }
 
         function runOptimization() {
-            // Process departures - ENFORCING ONE VESSEL PER BERTH
             berths.forEach(b => {
                 if (b.isOccupied && b.freeAfter && b.freeAfter <= simulationTime) {
                     const departedVessel = vessels.find(v => v.id === b.occupiedBy);
@@ -945,7 +1181,6 @@
                         departedVessel.status = 'Departed';
                         logActivity(`<strong>${departedVessel.name}</strong> has departed from Berth <strong>${b.name}</strong> at ${simulationTime.toLocaleTimeString()}.`, 'departure');
                         
-                        // Remove from ongoing services
                         delete ongoingVesselServices[departedVessel.name];
                         
                         const historyRecord = berthHistory[b.name]?.find(rec => 
@@ -958,7 +1193,6 @@
                             historyRecord.departureTime = new Date(simulationTime);
                         }
                     }
-                    // Free the berth for new vessel
                     b.isOccupied = false; 
                     b.occupiedBy = null; 
                     b.freeAfter = null;
@@ -966,15 +1200,13 @@
                 }
             });
 
-            // Process waiting vessels - ENFORCING ONE VESSEL PER BERTH
             const vesselsToAssign = vessels.filter(v => v.status === 'Waiting' && v.arrivalTime <= simulationTime)
-                                          .sort((a, b) => a.arrivalTime - b.arrivalTime);
+                                            .sort((a, b) => a.arrivalTime - b.arrivalTime);
             const availableBerths = berths.filter(b => !b.isOccupied);
 
             for (const vessel of vesselsToAssign) {
                 let assignedBerth = null;
                 
-                // Find first compatible berth that is not occupied
                 for (let i = 0; i < availableBerths.length; i++) {
                     if (isCompatible(vessel, availableBerths[i]) && !availableBerths[i].isOccupied) {
                         assignedBerth = availableBerths[i];
@@ -983,27 +1215,23 @@
                     }
                 }
 
-                if (assignedBerth && !assignedBerth.isOccupied) {  // Double-check berth is not occupied
+                if (assignedBerth && !assignedBerth.isOccupied) { 
                     vessel.berthingTime = new Date(simulationTime);
                     const serviceDuration = (Math.floor(Math.random() * 8) + 4) * 60 * 60 * 1000;
                     vessel.departureTime = new Date(vessel.berthingTime.getTime() + serviceDuration);
                     vessel.status = 'Berthed';
                     vessel.assignedBerthId = assignedBerth.id;
                     
-                    // Update berth state - ENFORCE ONE VESSEL PER BERTH
                     assignedBerth.isOccupied = true;
                     assignedBerth.occupiedBy = vessel.id;
                     assignedBerth.freeAfter = vessel.departureTime;
                     assignedBerth.currentVessel = vessel;
 
-                    // Track ongoing service
                     ongoingVesselServices[vessel.name] = vessel.departureTime;
 
-                    // Calculate wait time and add to daily total
                     const waitTimeHours = (vessel.berthingTime - vessel.arrivalTime) / (1000 * 60 * 60);
                     totalWaitTimeForDay += waitTimeHours;
                     
-                    // Calculate time optimized - realistic calculation
                     const targetWaitTimeHours = 4;
                     const timeOptimized = Math.max(0, targetWaitTimeHours - waitTimeHours);
                     totalTimeOptimizedForDay += timeOptimized;
@@ -1028,7 +1256,6 @@
             if (activityLog.length > 50) activityLog.pop();
         }
 
-        //  UI RENDERING & INTERACTION
         function renderDashboard() {
             renderBerthGrid();
             renderWaitingList();
@@ -1237,7 +1464,6 @@
             })
         }
 
-        // Initialize everything when DOM is loaded
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
