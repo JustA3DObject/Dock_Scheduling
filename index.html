@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class=""> <!-- Add class="dark" here to default to dark mode -->
+<html lang="en" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,14 +10,14 @@
         :root {
             --bg-light: #f4f7fa;
             --bg-dark: #111827;
-            --card-light: rgba(255, 255, 255, 0.65);
-            --card-dark: rgba(31, 41, 55, 0.65);
+            --card-light: #ffffff;
+            --card-dark: rgba(31, 41, 55, 0.85);
             --border-light: #e5e7eb;
             --border-dark: #374151;
             --text-light: #1f2937;
             --text-dark: #f9fafb;
-            --text-muted-light: #6b7280;
-            --text-muted-dark: #9ca3af;
+            --text-muted-light: #4b5563;
+            --text-muted-dark: #d1d5db;
         }
         html { scroll-behavior: smooth; }
         body {
@@ -88,6 +88,20 @@
             display: none;
             opacity: 0;
         }
+        
+        /* Improved contrast for light mode */
+        .theme-light .text-slate-500 {
+            color: var(--text-muted-light);
+        }
+        .theme-light .text-slate-400 {
+            color: #6b7280;
+        }
+        .theme-light .bg-slate-200 {
+            background-color: #e5e7eb;
+        }
+        .theme-light .bg-slate-100 {
+            background-color: #f3f4f6;
+        }
     </style>
 </head>
 <body class="min-h-screen">
@@ -105,10 +119,10 @@
                 </div>
                 <div>
                     <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white">Berth Allocation AI</h1>
-                    <p class="text-base text-slate-500 dark:text-slate-400">Visakhapatnam Port Authority</p>
+                    <p class="text-base text-slate-700 dark:text-slate-300">Visakhapatnam Port Authority</p>
                 </div>
             </div>
-            <button id="theme-toggle" class="p-2 rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+            <button id="theme-toggle" class="p-2 rounded-full text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
                 <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
                 <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
             </button>
@@ -123,12 +137,12 @@
                     <div class="mb-5">
                         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Simulation Day</label>
                         <div class="flex w-full bg-slate-200 dark:bg-slate-800 rounded-lg p-1 space-x-1">
-                            <button id="day27Btn" class="date-btn w-full py-2 px-2 rounded-md text-sm font-medium text-slate-600 dark:text-slate-400 transition-all">Sep 27</button>
-                            <button id="day28Btn" class="date-btn w-full py-2 px-2 rounded-md text-sm font-medium text-slate-600 dark:text-slate-400 transition-all">Sep 28</button>
-                            <button id="day29Btn" class="date-btn w-full py-2 px-2 rounded-md text-sm font-medium text-slate-600 dark:text-slate-400 transition-all">Sep 29</button>
-                            <button id="day30Btn" class="date-btn w-full py-2 px-2 rounded-md text-sm font-medium text-slate-600 dark:text-slate-400 transition-all">Sep 30</button>
-                            <button id="day1Btn" class="date-btn w-full py-2 px-2 rounded-md text-sm font-medium text-slate-600 dark:text-slate-400 transition-all">Oct 1</button>
-                            <button id="day2Btn" class="date-btn w-full py-2 px-2 rounded-md text-sm font-medium text-slate-600 dark:text-slate-400 transition-all">Oct 2</button>
+                            <button id="day27Btn" class="date-btn w-full py-2 px-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-300 transition-all">Sep 27</button>
+                            <button id="day28Btn" class="date-btn w-full py-2 px-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-300 transition-all">Sep 28</button>
+                            <button id="day29Btn" class="date-btn w-full py-2 px-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-300 transition-all">Sep 29</button>
+                            <button id="day30Btn" class="date-btn w-full py-2 px-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-300 transition-all">Sep 30</button>
+                            <button id="day1Btn" class="date-btn w-full py-2 px-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-300 transition-all">Oct 1</button>
+                            <button id="day2Btn" class="date-btn w-full py-2 px-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-300 transition-all">Oct 2</button>
                         </div>
                     </div>
                     
@@ -140,7 +154,13 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
                             </svg>
-                            Run Optimization
+                            Run Daily Simulation
+                        </button>
+                        <button id="stopSimulationBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 shadow-lg text-lg flex items-center justify-center gap-2 hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1V8a1 1 0 00-1-1H8z" clip-rule="evenodd" />
+                            </svg>
+                            Stop Simulation
                         </button>
                     </div>
                 </div>
@@ -163,21 +183,21 @@
 
             <main class="lg:w-2/3 xl:w-3/4 space-y-8">
                  <div class="glass-card p-6 rounded-2xl">
-                     <h2 class="text-2xl font-bold mb-6 text-center">Operations Dashboard: Berth Status</h2>
+                     <h2 class="text-2xl font-bold mb-6 text-center text-slate-800 dark:text-slate-100">Operations Dashboard: Berth Status</h2>
                      <div id="berth-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"></div>
                  </div>
 
                 <div class="glass-card p-6 rounded-2xl">
-                    <h2 class="text-2xl font-bold mb-6 text-center">Optimal Berth Allotment Plan</h2>
+                    <h2 class="text-2xl font-bold mb-6 text-center text-slate-800 dark:text-slate-100">Optimal Berth Allotment Plan</h2>
                     <div class="overflow-x-auto">
                         <table class="min-w-full">
                             <thead>
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Vessel Name</th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Assigned Berth</th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Arrival Time</th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Berthing Time</th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Wait Time (Cost)</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Vessel Name</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Assigned Berth</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Arrival Time</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Berthing Time</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Wait Time (Cost)</th>
                                 </tr>
                             </thead>
                             <tbody id="allotment-plan-body"></tbody>
@@ -194,8 +214,8 @@
         <div class="glass-card w-full max-w-2xl rounded-2xl z-10 transform scale-95 transition-transform duration-300">
             <div class="p-6">
                 <div class="flex justify-between items-center mb-4 pb-4 border-b border-slate-300 dark:border-slate-700">
-                    <h3 id="modal-title" class="text-2xl font-bold">Berth Service History</h3>
-                    <button id="modal-close-btn" class="p-2 rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                    <h3 id="modal-title" class="text-2xl font-bold text-slate-800 dark:text-slate-100">Berth Service History</h3>
+                    <button id="modal-close-btn" class="p-2 rounded-full text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
                     </button>
                 </div>
@@ -206,18 +226,22 @@
         </div>
     </div>
 
-
     <script>
         // --- THEME TOGGLE SCRIPT ---
         const themeToggle = document.getElementById('theme-toggle');
         const themeIconLight = document.getElementById('theme-icon-light');
         const themeIconDark = document.getElementById('theme-icon-dark');
 
+        // Add theme class to body for better contrast control
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
+            document.body.classList.add('theme-dark');
+            document.body.classList.remove('theme-light');
             themeIconLight.classList.remove('hidden');
         } else {
             document.documentElement.classList.remove('dark');
+            document.body.classList.add('theme-light');
+            document.body.classList.remove('theme-dark');
             themeIconDark.classList.remove('hidden');
         }
 
@@ -225,13 +249,186 @@
             document.documentElement.classList.toggle('dark');
             const isDark = document.documentElement.classList.contains('dark');
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            
+            if (isDark) {
+                document.body.classList.add('theme-dark');
+                document.body.classList.remove('theme-light');
+            } else {
+                document.body.classList.add('theme-light');
+                document.body.classList.remove('theme-dark');
+            }
+            
             themeIconLight.classList.toggle('hidden', !isDark);
             themeIconDark.classList.toggle('hidden', isDark);
         });
         
-        // --- SIMULATION DATA (UNCHANGED) ---
-        const berthSpecifications = { 'EQ-1': { loa: 240, draft: 14.5 }, 'EQ-3': { loa: 240, draft: 14.5 }, 'EQ-4': { loa: 240, draft: 14.5 }, 'EQ-5': { loa: 240, draft: 11.5 }, 'EQ-6': { loa: 240, draft: 11.5 }, 'EQ-7': { loa: 240, draft: 14.5 }, 'EQ-8': { loa: 235, draft: 14.5 }, 'EQ-9': { loa: 235, draft: 14.5 }, 'EQ-10': { loa: 160, draft: 11 }, 'WQ-1': { loa: 240, draft: 11 }, 'WQ-2': { loa: 240, draft: 13.5 }, 'WQ-3': { loa: 240, draft: 13.5 }, 'WQ-4': { loa: 240, draft: 11.5 }, 'WQ-5': { loa: 240, draft: 11.5 }, 'WQ-6': { loa: 230, draft: 14.5 }, 'WQ-7': { loa: 240, draft: 14.5 }, 'WQ-8': { loa: 240, draft: 14.5 }, FB: { loa: 200, draft: 10.06 }, 'OR-1': { loa: 195, draft: 11 }, 'OR-2': { loa: 195, draft: 11 }, 'OR-3': { loa: 160, draft: 10.5 }, OSTT: { loa: 280, draft: 17 }, LPG: { loa: 230, draft: 14 }, 'OB-1': { loa: 300, draft: 16.5 }, 'OB-2': { loa: 300, draft: 17 }, 'C.TERMIN': { loa: 300, draft: 8.5 }, VGCB: { loa: 300, draft: 18.1 }, 'CB-1': { loa: 390, draft: 16 }, 'CB-2': { loa: 390, draft: 16 }, 'CB-3': { loa: 390, draft: 16 }, 'CB-4': { loa: 390, draft: 16 }, 'EQ-1A': { loa: 240, draft: 14.5 }, 'WQ-1RE': { loa: 240, draft: 11 }, SPM: { loa: 400, draft: 22 } };
-        const portDataByDay = { 27: { occupancy: [{ berthName: 'OB-2', vesselName: 'm.v COMMON HORIZON' }, { berthName: 'C.TERMIN', vesselName: 'm.v SAFINAH' }, { berthName: 'VGCB', vesselName: 'm.v THEODORE JR' }, { berthName: 'OSTT', vesselName: 'm.t SWARNA KRISHNA' }, { berthName: 'CB-3', vesselName: 'm.v PAC SCHEDAR' }, { berthName: 'EQ-1', vesselName: 'm.v SARAH OLDENDORFF' }, { berthName: 'EQ-3', vesselName: 'm.v HERMES' }, { berthName: 'EQ-4', vesselName: 'm.v PIONEER KIRA' }, { berthName: 'EQ-6', vesselName: 'm.v KIRAN AMERICA' }, { berthName: 'EQ-9', vesselName: 'm.v NEW GALAXY' }, { berthName: 'WQ-1', vesselName: 'm.v FLAG EVI' }, { berthName: 'WQ-2', vesselName: 'm.v ENDEAVOR' }, { berthName: 'WQ-3', vesselName: 'm.v SUNNY FORTUNE' }, { berthName: 'WQ-4', vesselName: 'm.v JIN HAI ZHENG' }, { berthName: 'WQ-5', vesselName: 'm.v YIN NENG' }, { berthName: 'WQ-6', vesselName: 'm.v JABAL SAMHAN' }, { berthName: 'WQ-7', vesselName: 'm.v ILIA' }, { berthName: 'WQ-8', vesselName: 'm.v STAR HAMBURG' }, { berthName: 'OR-1', vesselName: 'm.t ZHONG CHI' }, { berthName: 'FB', vesselName: 'm.v AMOY PROGRESS' }], waiting: [{ name: 'm.v JAL KAMADHENU', tonnes: 75000, arrivalStr: '27-Sep-2025 08:00' }, { name: 'm.t ASPHALT EXPRSS', tonnes: 6000, arrivalStr: '27-Sep-2025 05:22' }, { name: 'm.v MONA LISA', tonnes: 32000, arrivalStr: '27-Sep-2025 02:50' }, { name: 'm.v CHIPOL CHANGAN', tonnes: 13000, arrivalStr: '27-Sep-2025 15:00' }, { name: 'm.t DESH VISHAL', tonnes: 261261, arrivalStr: '27-Sep-2025 15:00' }, { name: 'm.t A R G', tonnes: 9000, arrivalStr: '27-Sep-2025 18:00' }] }, 28: { occupancy: [{ berthName: 'OB-1', vesselName: 'm.v JAL KAMADHENU' }, { berthName: 'OB-2', vesselName: 'm.v COMMON HORIZON' }, { berthName: 'C.TERMIN', vesselName: 'm.v SAFINAH' }, { berthName: 'VGCB', vesselName: 'm.v RED ORCHID' }, { berthName: 'OSTT', vesselName: 'm.t SWARNA KRISHNA' }, { berthName: 'EQ-1', vesselName: 'm.v SARAH OLDENDORFF' }, { berthName: 'EQ-3', vesselName: 'm.v HERMES' }, { berthName: 'EQ-4', vesselName: 'm.v PIONEER KIRA' }, { berthName: 'EQ-6', vesselName: 'm.v KIRAN AMERICA' }, { berthName: 'WQ-1', vesselName: 'm.v FLAG EVI' }, { berthName: 'WQ-2', vesselName: 'm.v ENDEAVOR' }, { berthName: 'WQ-3', vesselName: 'm.v SUNNY FORTUNE' }, { berthName: 'WQ-4', vesselName: 'm.v JIN HAI ZHENG' }, { berthName: 'WQ-5', vesselName: 'm.v YIN NENG' }, { berthName: 'WQ-6', vesselName: 'm.v JABAL SAMHAN' }, { berthName: 'WQ-7', vesselName: 'm.v ILIA' }, { berthName: 'WQ-8', vesselName: 'm.v STAR HAMBURG' }, { berthName: 'OR-1', vesselName: 'm.t ZHONG CHI' }, { berthName: 'OR-3', vesselName: 'm.t ASPHALT EXPRESS' }, { berthName: 'FB', vesselName: 'm.v AMOY PROGRESS' }], waiting: [{ name: 'm.t ALPINE LIGHT', tonnes: 34650, arrivalStr: '28-Sep-2025 01:45' }, { name: 'm.v PAC CAPELLA', tonnes: 8240, arrivalStr: '28-Sep-2025 05:56' }, { name: 'm.t AL SHAFFIAH', tonnes: 11923, arrivalStr: '28-Sep-2025 10:00' }, { name: 'm.v WAN HAI 367', tonnes: 21500, arrivalStr: '28-Sep-2025 09:00' }, { name: 'm.v GSL MELINA', tonnes: 24000, arrivalStr: '28-Sep-2025 15:00' }] }, 29: { occupancy: [{ berthName: 'OB-1', vesselName: 'm.v JAL KAMADHENU' }, { berthName: 'C.TERMIN', vesselName: 'm.v SAFINAH' }, { berthName: 'VGCB', vesselName: 'm.v RED ORCHID' }, { berthName: 'LPG', vesselName: 'LPG/C. GAS VIRGO' }, { berthName: 'CB-2', vesselName: 'm.v WAN HAI 367' }, { berthName: 'CB-3', vesselName: 'm.v GSL MELINA' }, { berthName: 'EQ-1', vesselName: 'm.v SARAH OLDENDORFF' }, { berthName: 'EQ-3', vesselName: 'm.v HERMES' }, { berthName: 'EQ-4', vesselName: 'm.v PIONEER KIRA' }, { berthName: 'EQ-6', vesselName: 'm.v KIRAN AMERICA' }, { berthName: 'WQ-1', vesselName: 'm.v FLAG EVI' }, { berthName: 'WQ-2', vesselName: 'm.v ENDEAVOR' }, { berthName: 'WQ-3', vesselName: 'm.v NORD UTOPIA' }, { berthName: 'WQ-4', vesselName: 'm.v CHIPOL CHANGAN' }, { berthName: 'WQ-5', vesselName: 'm.v INLACO EXPRESS' }, { berthName: 'WQ-6', vesselName: 'm.v JABAL SAMHAN' }, { berthName: 'WQ-7', vesselName: 'm.v ILIA' }, { berthName: 'WQ-8', vesselName: 'm.v STAR HAMBURG' }, { berthName: 'OR-1', vesselName: 'm.t ALPINE LIGHT' }, { berthName: 'OR-3', vesselName: 'm.t A R G' }], waiting: [{ name: 'm.v GCL GANGA', tonnes: 105000, arrivalStr: '29-Sep-2025 15:00' }, { name: 'm.t GLBS MAGIC', tonnes: 54390, arrivalStr: '29-Sep-2025 00:13' }, { name: 'm.v SANTA IRINI [GLP]', tonnes: 32872, arrivalStr: '29-Sep-2025 18:00' }, { name: 'm.v HAPPY HERO', tonnes: 8233, arrivalStr: '29-Sep-2025 12:00' }, { name: 'm.v CONTSHIP ANA II', tonnes: 18000, arrivalStr: '29-Sep-2025 10:00' }, { name: 'm.t STI DUCHESSA', tonnes: 6797, arrivalStr: '29-Sep-2025 19:00' }, { name: 'LPG/C SEARAMBLER', tonnes: 5000, arrivalStr: '29-Sep-2025 11:30' }] }, 30: { occupancy: [{ berthName: 'OB-1', vesselName: 'm.v JAL KAMADHENU' }, { berthName: 'C.TERMIN', vesselName: 'm.v SAFINAH' }, { berthName: 'VGCB', vesselName: 'm.v RED ORCHID' }, { berthName: 'SPM', vesselName: 'm.t DESH VISHAL' }, { berthName: 'LPG', vesselName: 'LPG/C. GAS VIRGO' }, { berthName: 'CB-2', vesselName: 'm.v CONTSHIP ANA II' }, { berthName: 'EQ-1', vesselName: 'm.v SARAH OLDENDORFF' }, { berthName: 'EQ-3', vesselName: 'm.y BOS BROOK' }, { berthName: 'EQ-4', vesselName: 'm.v PIONEER KIRA' }, { berthName: 'EQ-6', vesselName: 'm.v KIRAN AMERICA' }, { berthName: 'WQ-1RE', vesselName: 'm.v HAPPY HERO' }, { berthName: 'WQ-1', vesselName: 'm.v RIO RITA' }, { berthName: 'WQ-2', vesselName: 'm.v PAC CAPELLA' }, { berthName: 'WQ-3', vesselName: 'm.v NORD UTOPIA' }, { berthName: 'WQ-4', vesselName: 'm.v CHIPOL CHANGAN' }, { berthName: 'WQ-5', vesselName: 'm.v INLACO EXPRESS' }, { berthName: 'WQ-6', vesselName: 'm.v JABAL SAMHAN' }, { berthName: 'WQ-7', vesselName: 'm.v ILIA' }, { berthName: 'WQ-8', vesselName: 'm.v STAR HAMBURG' }, { berthName: 'OR-1', vesselName: 'm.t ALPINE LIGHT' }, { berthName: 'FB', vesselName: 'LPG/C SEARAMBLER' }], waiting: [{ name: 'm.v GCL GANGA', tonnes: 105000, arrivalStr: '29-Sep-2025 12:08' }, { name: 'm.v ABRAM SCHULTE', tonnes: 55000, arrivalStr: '30-Sep-2025 12:00' }, { name: 'm.v MONA LISA', tonnes: 32000, arrivalStr: '27-Sep-2025 02:50' }, { name: 'm.t GLBS MAGIC', tonnes: 54390, arrivalStr: '29-Sep-2025 00:13' }, { name: 'm.v SANTA IRINI [GLP]', tonnes: 32872, arrivalStr: '30-Sep-2025 13:00' }, { name: 'm.t AL SHAFFIAH', tonnes: 11923, arrivalStr: '28-Sep-2025 17:41' }, { name: 'm.v CL ANZI HE', tonnes: 55900, arrivalStr: '30-Sep-2025 10:00' }, { name: 'LPG/C GREEN SANVI', tonnes: 25900, arrivalStr: '26-Sep-2025 06:28' }, { name: 'm.t STI DUCHESSA', tonnes: 6797, arrivalStr: '29-Sep-2025 07:52' }] }, 1: { occupancy: [{ berthName: 'C.TERMIN', vesselName: 'm.v SAFINAH' }, { berthName: 'VGCB', vesselName: 'm.v MONA LISA' }, { berthName: 'SPM', vesselName: 'm.t DESH VISHAL' }, { berthName: 'CB-1', vesselName: 'm.v SSL SABARIMALAI' }, { berthName: 'EQ-1A', vesselName: 'm.v SANTA IRINI' }, { berthName: 'EQ-1', vesselName: 'm.v GLBS MAGIC' }, { berthName: 'EQ-3', vesselName: 'm.v BOS BROOK' }, { berthName: 'EQ-4', vesselName: 'm.v RACOON' }, { berthName: 'EQ-6', vesselName: 'm.v KIRAN AMERICA' }, { berthName: 'WQ-1RE', vesselName: 'm.v HAPPY HERO' }, { berthName: 'WQ-1', vesselName: 'm.v RIO RITA' }, { berthName: 'WQ-2', vesselName: 'm.v PAC CAPELLA' }, { berthName: 'WQ-3', vesselName: 'm.v NORD UTOPIA' }, { berthName: 'WQ-4', vesselName: 'm.v CHIPOL CHANGAN' }, { berthName: 'WQ-6', vesselName: 'm.v JABAL SAMHAN' }, { berthName: 'WQ-7', vesselName: 'm.v ILIA' }, { berthName: 'WQ-8', vesselName: 'm.v STAR HAMBURG' }, { berthName: 'OR-3', vesselName: 'm.t AL SHAFFIAH' }], waiting: [{ name: 'm.v GCL GANGA', tonnes: 105000, arrivalStr: '29-Sep-2025 12:08' }, { name: 'm.v ABRAM SCHULTE', tonnes: 55000, arrivalStr: '30-Sep-2025 10:21' }, { name: 'm.v STARLIGHT', tonnes: 34037, arrivalStr: '02-Sep-2025 16:28' }, { name: 'm.t HELEN M', tonnes: 34650, arrivalStr: '30-Sep-2025 18:57' }, { name: 'm.t LOURDES', tonnes: 6000, arrivalStr: '01-Oct-2025 03:22' }, { name: 'LPG/C GAS QUANTUM', tonnes: 5000, arrivalStr: '01-Oct-2025 13:00' }, { name: 'm.v PORTO LIMNIONI [GLP]', tonnes: 44000, arrivalStr: '01-Oct-2025 10:00' }, { name: 'm.v GEOPRIDE', tonnes: 46176, arrivalStr: '01-Oct-2025 15:00' }, { name: 'm.y CL ANZI HE', tonnes: 55900, arrivalStr: '01-Oct-2025 10:00' }, { name: 'm.v VAN INFINITY', tonnes: 19000, arrivalStr: '01-Oct-2025 21:30' }, { name: 'm..v XIN TIAN JIN', tonnes: 35100, arrivalStr: '01-Oct-2025 09:30' }, { name: 'LPG/C GREEN SANVI', tonnes: 25900, arrivalStr: '26-Sep-2025 06:28' }, { name: 'm.t STI DUCHESSA', tonnes: 6797, arrivalStr: '29-Sep-2025 07:52' }, { name: 'LPG/C SHIVALIK', tonnes: 30000, arrivalStr: '02-Sep-2025 04:00' }] }, 2: { occupancy: [{ berthName: 'OB-2', vesselName: 'm.v GCL GANGA' }, { berthName: 'VGCB', vesselName: 'm.v CL ANZI HE' }, { berthName: 'CB-3', vesselName: 'm.v XIN TIAN JIN' }, { berthName: 'EQ-1A', vesselName: 'm.v SANTA IRINI' }, { berthName: 'EQ-1', vesselName: 'm.v GLBS MAGIC' }, { berthName: 'EQ-3', vesselName: 'm.v BOS BROOK' }, { berthName: 'EQ-4', vesselName: 'm.v RACOON' }, { berthName: 'EQ-8', vesselName: 'm.v GEOPRIDE' }, { berthName: 'WQ-1RE', vesselName: 'm.v HAPPY HERO' }, { berthName: 'WQ-1', vesselName: 'm.v RIO RITA' }, { berthName: 'WQ-2', vesselName: 'm.v PAC CAPELLA' }, { berthName: 'WQ-3', vesselName: 'm.v NORD UTOPIA' }, { berthName: 'WQ-6', vesselName: 'm.v JABAL SAMHAN' }, { berthName: 'WQ-7', vesselName: 'm.v ILIA' }, { berthName: 'OR-1', vesselName: 'm.t STI DUCHESSA' }], waiting: [{ name: 'm.v ABRAM SCHULTE', tonnes: 55000, arrivalStr: '30-Sep-2025 10:21' }, { name: 'm.v AN HAI STAR', tonnes: 4230, arrivalStr: '02-Oct-2025 10:00' }, { name: 'm.v ISE', tonnes: 18000, arrivalStr: '02-Oct-2025 13:00' }, { name: 'm.v STARLIGHT', tonnes: 34037, arrivalStr: '02-Sep-2025 16:28' }, { name: 'm.v SAFINAH', tonnes: 29040, arrivalStr: '05-Aug-2025 17:48' }, { name: 'm.t HELEN M', tonnes: 34650, arrivalStr: '30-Sep-2025 18:57' }, { name: 'LPG/C GAS QUANTUM', tonnes: 5000, arrivalStr: '02-Oct-2025 08:00' }, { name: 'm.v PORTO LIMNIONI [GLP]', tonnes: 44000, arrivalStr: '01-Oct-2025 09:03' }, { name: 'm.y RAON TERESA', tonnes: 8258, arrivalStr: '02-Oct-2025 05:23' }, { name: 'm.v VAN INFINITY', tonnes: 19000, arrivalStr: '02-Oct-2025 08:00' }, { name: 'm.v SSL THAMIRABARANI', tonnes: 8500, arrivalStr: '04-Sep-2025 04:00' }, { name: 'LPG/C GREEN SANVI', tonnes: 25900, arrivalStr: '26-Sep-2025 06:28' }, { name: 'LPG/C. SHIVALIK', tonnes: 30000, arrivalStr: '02-Sep-2025 04:30' }] } };
+        // --- SIMULATION DATA ---
+        const berthSpecifications = { 
+            'EQ-1': { loa: 240, draft: 14.5 }, 'EQ-3': { loa: 240, draft: 14.5 }, 'EQ-4': { loa: 240, draft: 14.5 }, 
+            'EQ-5': { loa: 240, draft: 11.5 }, 'EQ-6': { loa: 240, draft: 11.5 }, 'EQ-7': { loa: 240, draft: 14.5 }, 
+            'EQ-8': { loa: 235, draft: 14.5 }, 'EQ-9': { loa: 235, draft: 14.5 }, 'EQ-10': { loa: 160, draft: 11 }, 
+            'WQ-1': { loa: 240, draft: 11 }, 'WQ-2': { loa: 240, draft: 13.5 }, 'WQ-3': { loa: 240, draft: 13.5 }, 
+            'WQ-4': { loa: 240, draft: 11.5 }, 'WQ-5': { loa: 240, draft: 11.5 }, 'WQ-6': { loa: 230, draft: 14.5 }, 
+            'WQ-7': { loa: 240, draft: 14.5 }, 'WQ-8': { loa: 240, draft: 14.5 }, 'FB': { loa: 200, draft: 10.06 }, 
+            'OR-1': { loa: 195, draft: 11 }, 'OR-2': { loa: 195, draft: 11 }, 'OR-3': { loa: 160, draft: 10.5 }, 
+            'OSTT': { loa: 280, draft: 17 }, 'LPG': { loa: 230, draft: 14 }, 'OB-1': { loa: 300, draft: 16.5 }, 
+            'OB-2': { loa: 300, draft: 17 }, 'C.TERMIN': { loa: 300, draft: 8.5 }, 'VGCB': { loa: 300, draft: 18.1 }, 
+            'CB-1': { loa: 390, draft: 16 }, 'CB-2': { loa: 390, draft: 16 }, 'CB-3': { loa: 390, draft: 16 }, 
+            'CB-4': { loa: 390, draft: 16 }, 'EQ-1A': { loa: 240, draft: 14.5 }, 'WQ-1RE': { loa: 240, draft: 11 }, 
+            'SPM': { loa: 400, draft: 22 } 
+        };
+        
+        const portDataByDay = { 
+            27: { 
+                occupancy: [
+                    { berthName: 'OB-2', vesselName: 'm.v COMMON HORIZON' }, { berthName: 'C.TERMIN', vesselName: 'm.v SAFINAH' }, 
+                    { berthName: 'VGCB', vesselName: 'm.v THEODORE JR' }, { berthName: 'OSTT', vesselName: 'm.t SWARNA KRISHNA' }, 
+                    { berthName: 'CB-3', vesselName: 'm.v PAC SCHEDAR' }, { berthName: 'EQ-1', vesselName: 'm.v SARAH OLDENDORFF' }, 
+                    { berthName: 'EQ-3', vesselName: 'm.v HERMES' }, { berthName: 'EQ-4', vesselName: 'm.v PIONEER KIRA' }, 
+                    { berthName: 'EQ-6', vesselName: 'm.v KIRAN AMERICA' }, { berthName: 'EQ-9', vesselName: 'm.v NEW GALAXY' }, 
+                    { berthName: 'WQ-1', vesselName: 'm.v FLAG EVI' }, { berthName: 'WQ-2', vesselName: 'm.v ENDEAVOR' }, 
+                    { berthName: 'WQ-3', vesselName: 'm.v SUNNY FORTUNE' }, { berthName: 'WQ-4', vesselName: 'm.v JIN HAI ZHENG' }, 
+                    { berthName: 'WQ-5', vesselName: 'm.v YIN NENG' }, { berthName: 'WQ-6', vesselName: 'm.v JABAL SAMHAN' }, 
+                    { berthName: 'WQ-7', vesselName: 'm.v ILIA' }, { berthName: 'WQ-8', vesselName: 'm.v STAR HAMBURG' }, 
+                    { berthName: 'OR-1', vesselName: 'm.t ZHONG CHI' }, { berthName: 'FB', vesselName: 'm.v AMOY PROGRESS' }
+                ], 
+                waiting: [
+                    { name: 'm.v JAL KAMADHENU', tonnes: 75000, arrivalStr: '27-Sep-2025 08:00' }, 
+                    { name: 'm.t ASPHALT EXPRSS', tonnes: 6000, arrivalStr: '27-Sep-2025 05:22' }, 
+                    { name: 'm.v MONA LISA', tonnes: 32000, arrivalStr: '27-Sep-2025 02:50' }, 
+                    { name: 'm.v CHIPOL CHANGAN', tonnes: 13000, arrivalStr: '27-Sep-2025 15:00' }, 
+                    { name: 'm.t DESH VISHAL', tonnes: 261261, arrivalStr: '27-Sep-2025 15:00' }, 
+                    { name: 'm.t A R G', tonnes: 9000, arrivalStr: '27-Sep-2025 18:00' }
+                ] 
+            }, 
+            28: { 
+                occupancy: [
+                    { berthName: 'OB-1', vesselName: 'm.v JAL KAMADHENU' }, { berthName: 'OB-2', vesselName: 'm.v COMMON HORIZON' }, 
+                    { berthName: 'C.TERMIN', vesselName: 'm.v SAFINAH' }, { berthName: 'VGCB', vesselName: 'm.v RED ORCHID' }, 
+                    { berthName: 'OSTT', vesselName: 'm.t SWARNA KRISHNA' }, { berthName: 'EQ-1', vesselName: 'm.v SARAH OLDENDORFF' }, 
+                    { berthName: 'EQ-3', vesselName: 'm.v HERMES' }, { berthName: 'EQ-4', vesselName: 'm.v PIONEER KIRA' }, 
+                    { berthName: 'EQ-6', vesselName: 'm.v KIRAN AMERICA' }, { berthName: 'WQ-1', vesselName: 'm.v FLAG EVI' }, 
+                    { berthName: 'WQ-2', vesselName: 'm.v ENDEAVOR' }, { berthName: 'WQ-3', vesselName: 'm.v SUNNY FORTUNE' }, 
+                    { berthName: 'WQ-4', vesselName: 'm.v JIN HAI ZHENG' }, { berthName: 'WQ-5', vesselName: 'm.v YIN NENG' }, 
+                    { berthName: 'WQ-6', vesselName: 'm.v JABAL SAMHAN' }, { berthName: 'WQ-7', vesselName: 'm.v ILIA' }, 
+                    { berthName: 'WQ-8', vesselName: 'm.v STAR HAMBURG' }, { berthName: 'OR-1', vesselName: 'm.t ZHONG CHI' }, 
+                    { berthName: 'OR-3', vesselName: 'm.t ASPHALT EXPRESS' }, { berthName: 'FB', vesselName: 'm.v AMOY PROGRESS' }
+                ], 
+                waiting: [
+                    { name: 'm.t ALPINE LIGHT', tonnes: 34650, arrivalStr: '28-Sep-2025 01:45' }, 
+                    { name: 'm.v PAC CAPELLA', tonnes: 8240, arrivalStr: '28-Sep-2025 05:56' }, 
+                    { name: 'm.t AL SHAFFIAH', tonnes: 11923, arrivalStr: '28-Sep-2025 10:00' }, 
+                    { name: 'm.v WAN HAI 367', tonnes: 21500, arrivalStr: '28-Sep-2025 09:00' }, 
+                    { name: 'm.v GSL MELINA', tonnes: 24000, arrivalStr: '28-Sep-2025 15:00' }
+                ] 
+            }, 
+            29: { 
+                occupancy: [
+                    { berthName: 'OB-1', vesselName: 'm.v JAL KAMADHENU' }, { berthName: 'C.TERMIN', vesselName: 'm.v SAFINAH' }, 
+                    { berthName: 'VGCB', vesselName: 'm.v RED ORCHID' }, { berthName: 'LPG', vesselName: 'LPG/C. GAS VIRGO' }, 
+                    { berthName: 'CB-2', vesselName: 'm.v WAN HAI 367' }, { berthName: 'CB-3', vesselName: 'm.v GSL MELINA' }, 
+                    { berthName: 'EQ-1', vesselName: 'm.v SARAH OLDENDORFF' }, { berthName: 'EQ-3', vesselName: 'm.v HERMES' }, 
+                    { berthName: 'EQ-4', vesselName: 'm.v PIONEER KIRA' }, { berthName: 'EQ-6', vesselName: 'm.v KIRAN AMERICA' }, 
+                    { berthName: 'WQ-1', vesselName: 'm.v FLAG EVI' }, { berthName: 'WQ-2', vesselName: 'm.v ENDEAVOR' }, 
+                    { berthName: 'WQ-3', vesselName: 'm.v NORD UTOPIA' }, { berthName: 'WQ-4', vesselName: 'm.v CHIPOL CHANGAN' }, 
+                    { berthName: 'WQ-5', vesselName: 'm.v INLACO EXPRESS' }, { berthName: 'WQ-6', vesselName: 'm.v JABAL SAMHAN' }, 
+                    { berthName: 'WQ-7', vesselName: 'm.v ILIA' }, { berthName: 'WQ-8', vesselName: 'm.v STAR HAMBURG' }, 
+                    { berthName: 'OR-1', vesselName: 'm.t ALPINE LIGHT' }, { berthName: 'OR-3', vesselName: 'm.t A R G' }
+                ], 
+                waiting: [
+                    { name: 'm.v GCL GANGA', tonnes: 105000, arrivalStr: '29-Sep-2025 15:00' }, 
+                    { name: 'm.t GLBS MAGIC', tonnes: 54390, arrivalStr: '29-Sep-2025 00:13' }, 
+                    { name: 'm.v SANTA IRINI [GLP]', tonnes: 32872, arrivalStr: '29-Sep-2025 18:00' }, 
+                    { name: 'm.v HAPPY HERO', tonnes: 8233, arrivalStr: '29-Sep-2025 12:00' }, 
+                    { name: 'm.v CONTSHIP ANA II', tonnes: 18000, arrivalStr: '29-Sep-2025 10:00' }, 
+                    { name: 'm.t STI DUCHESSA', tonnes: 6797, arrivalStr: '29-Sep-2025 19:00' }, 
+                    { name: 'LPG/C SEARAMBLER', tonnes: 5000, arrivalStr: '29-Sep-2025 11:30' }
+                ] 
+            }, 
+            30: { 
+                occupancy: [
+                    { berthName: 'OB-1', vesselName: 'm.v JAL KAMADHENU' }, { berthName: 'C.TERMIN', vesselName: 'm.v SAFINAH' }, 
+                    { berthName: 'VGCB', vesselName: 'm.v RED ORCHID' }, { berthName: 'SPM', vesselName: 'm.t DESH VISHAL' }, 
+                    { berthName: 'LPG', vesselName: 'LPG/C. GAS VIRGO' }, { berthName: 'CB-2', vesselName: 'm.v CONTSHIP ANA II' }, 
+                    { berthName: 'EQ-1', vesselName: 'm.v SARAH OLDENDORFF' }, { berthName: 'EQ-3', vesselName: 'm.y BOS BROOK' }, 
+                    { berthName: 'EQ-4', vesselName: 'm.v PIONEER KIRA' }, { berthName: 'EQ-6', vesselName: 'm.v KIRAN AMERICA' }, 
+                    { berthName: 'WQ-1RE', vesselName: 'm.v HAPPY HERO' }, { berthName: 'WQ-1', vesselName: 'm.v RIO RITA' }, 
+                    { berthName: 'WQ-2', vesselName: 'm.v PAC CAPELLA' }, { berthName: 'WQ-3', vesselName: 'm.v NORD UTOPIA' }, 
+                    { berthName: 'WQ-4', vesselName: 'm.v CHIPOL CHANGAN' }, { berthName: 'WQ-5', vesselName: 'm.v INLACO EXPRESS' }, 
+                    { berthName: 'WQ-6', vesselName: 'm.v JABAL SAMHAN' }, { berthName: 'WQ-7', vesselName: 'm.v ILIA' }, 
+                    { berthName: 'WQ-8', vesselName: 'm.v STAR HAMBURG' }, { berthName: 'OR-1', vesselName: 'm.t ALPINE LIGHT' }, 
+                    { berthName: 'FB', vesselName: 'LPG/C SEARAMBLER' }
+                ], 
+                waiting: [
+                    { name: 'm.v GCL GANGA', tonnes: 105000, arrivalStr: '29-Sep-2025 12:08' }, 
+                    { name: 'm.v ABRAM SCHULTE', tonnes: 55000, arrivalStr: '30-Sep-2025 12:00' }, 
+                    { name: 'm.v MONA LISA', tonnes: 32000, arrivalStr: '27-Sep-2025 02:50' }, 
+                    { name: 'm.t GLBS MAGIC', tonnes: 54390, arrivalStr: '29-Sep-2025 00:13' }, 
+                    { name: 'm.v SANTA IRINI [GLP]', tonnes: 32872, arrivalStr: '30-Sep-2025 13:00' }, 
+                    { name: 'm.t AL SHAFFIAH', tonnes: 11923, arrivalStr: '28-Sep-2025 17:41' }, 
+                    { name: 'm.v CL ANZI HE', tonnes: 55900, arrivalStr: '30-Sep-2025 10:00' }, 
+                    { name: 'LPG/C GREEN SANVI', tonnes: 25900, arrivalStr: '26-Sep-2025 06:28' }, 
+                    { name: 'm.t STI DUCHESSA', tonnes: 6797, arrivalStr: '29-Sep-2025 07:52' }
+                ] 
+            }, 
+            1: { 
+                occupancy: [
+                    { berthName: 'C.TERMIN', vesselName: 'm.v SAFINAH' }, { berthName: 'VGCB', vesselName: 'm.v MONA LISA' }, 
+                    { berthName: 'SPM', vesselName: 'm.t DESH VISHAL' }, { berthName: 'CB-1', vesselName: 'm.v SSL SABARIMALAI' }, 
+                    { berthName: 'EQ-1A', vesselName: 'm.v SANTA IRINI' }, { berthName: 'EQ-1', vesselName: 'm.v GLBS MAGIC' }, 
+                    { berthName: 'EQ-3', vesselName: 'm.v BOS BROOK' }, { berthName: 'EQ-4', vesselName: 'm.v RACOON' }, 
+                    { berthName: 'EQ-6', vesselName: 'm.v KIRAN AMERICA' }, { berthName: 'WQ-1RE', vesselName: 'm.v HAPPY HERO' }, 
+                    { berthName: 'WQ-1', vesselName: 'm.v RIO RITA' }, { berthName: 'WQ-2', vesselName: 'm.v PAC CAPELLA' }, 
+                    { berthName: 'WQ-3', vesselName: 'm.v NORD UTOPIA' }, { berthName: 'WQ-4', vesselName: 'm.v CHIPOL CHANGAN' }, 
+                    { berthName: 'WQ-6', vesselName: 'm.v JABAL SAMHAN' }, { berthName: 'WQ-7', vesselName: 'm.v ILIA' }, 
+                    { berthName: 'WQ-8', vesselName: 'm.v STAR HAMBURG' }, { berthName: 'OR-3', vesselName: 'm.t AL SHAFFIAH' }
+                ], 
+                waiting: [
+                    { name: 'm.v GCL GANGA', tonnes: 105000, arrivalStr: '29-Sep-2025 12:08' }, 
+                    { name: 'm.v ABRAM SCHULTE', tonnes: 55000, arrivalStr: '30-Sep-2025 10:21' }, 
+                    { name: 'm.v STARLIGHT', tonnes: 34037, arrivalStr: '02-Sep-2025 16:28' }, 
+                    { name: 'm.t HELEN M', tonnes: 34650, arrivalStr: '30-Sep-2025 18:57' }, 
+                    { name: 'm.t LOURDES', tonnes: 6000, arrivalStr: '01-Oct-2025 03:22' }, 
+                    { name: 'LPG/C GAS QUANTUM', tonnes: 5000, arrivalStr: '01-Oct-2025 13:00' }, 
+                    { name: 'm.v PORTO LIMNIONI [GLP]', tonnes: 44000, arrivalStr: '01-Oct-2025 10:00' }, 
+                    { name: 'm.v GEOPRIDE', tonnes: 46176, arrivalStr: '01-Oct-2025 15:00' }, 
+                    { name: 'm.y CL ANZI HE', tonnes: 55900, arrivalStr: '01-Oct-2025 10:00' }, 
+                    { name: 'm.v VAN INFINITY', tonnes: 19000, arrivalStr: '01-Oct-2025 21:30' }, 
+                    { name: 'm..v XIN TIAN JIN', tonnes: 35100, arrivalStr: '01-Oct-2025 09:30' }, 
+                    { name: 'LPG/C GREEN SANVI', tonnes: 25900, arrivalStr: '26-Sep-2025 06:28' }, 
+                    { name: 'm.t STI DUCHESSA', tonnes: 6797, arrivalStr: '29-Sep-2025 07:52' }, 
+                    { name: 'LPG/C SHIVALIK', tonnes: 30000, arrivalStr: '02-Sep-2025 04:00' }
+                ] 
+            }, 
+            2: { 
+                occupancy: [
+                    { berthName: 'OB-2', vesselName: 'm.v GCL GANGA' }, { berthName: 'VGCB', vesselName: 'm.v CL ANZI HE' }, 
+                    { berthName: 'CB-3', vesselName: 'm.v XIN TIAN JIN' }, { berthName: 'EQ-1A', vesselName: 'm.v SANTA IRINI' }, 
+                    { berthName: 'EQ-1', vesselName: 'm.v GLBS MAGIC' }, { berthName: 'EQ-3', vesselName: 'm.v BOS BROOK' }, 
+                    { berthName: 'EQ-4', vesselName: 'm.v RACOON' }, { berthName: 'EQ-8', vesselName: 'm.v GEOPRIDE' }, 
+                    { berthName: 'WQ-1RE', vesselName: 'm.v HAPPY HERO' }, { berthName: 'WQ-1', vesselName: 'm.v RIO RITA' }, 
+                    { berthName: 'WQ-2', vesselName: 'm.v PAC CAPELLA' }, { berthName: 'WQ-3', vesselName: 'm.v NORD UTOPIA' }, 
+                    { berthName: 'WQ-6', vesselName: 'm.v JABAL SAMHAN' }, { berthName: 'WQ-7', vesselName: 'm.v ILIA' }, 
+                    { berthName: 'OR-1', vesselName: 'm.t STI DUCHESSA' }
+                ], 
+                waiting: [
+                    { name: 'm.v ABRAM SCHULTE', tonnes: 55000, arrivalStr: '30-Sep-2025 10:21' }, 
+                    { name: 'm.v AN HAI STAR', tonnes: 4230, arrivalStr: '02-Oct-2025 10:00' }, 
+                    { name: 'm.v ISE', tonnes: 18000, arrivalStr: '02-Oct-2025 13:00' }, 
+                    { name: 'm.v STARLIGHT', tonnes: 34037, arrivalStr: '02-Sep-2025 16:28' }, 
+                    { name: 'm.v SAFINAH', tonnes: 29040, arrivalStr: '05-Aug-2025 17:48' }, 
+                    { name: 'm.t HELEN M', tonnes: 34650, arrivalStr: '30-Sep-2025 18:57' }, 
+                    { name: 'LPG/C GAS QUANTUM', tonnes: 5000, arrivalStr: '02-Oct-2025 08:00' }, 
+                    { name: 'm.v PORTO LIMNIONI [GLP]', tonnes: 44000, arrivalStr: '01-Oct-2025 09:03' }, 
+                    { name: 'm.y RAON TERESA', tonnes: 8258, arrivalStr: '02-Oct-2025 05:23' }, 
+                    { name: 'm.v VAN INFINITY', tonnes: 19000, arrivalStr: '02-Oct-2025 08:00' }, 
+                    { name: 'm.v SSL THAMIRABARANI', tonnes: 8500, arrivalStr: '04-Sep-2025 04:00' }, 
+                    { name: 'LPG/C GREEN SANVI', tonnes: 25900, arrivalStr: '26-Sep-2025 06:28' }, 
+                    { name: 'LPG/C. SHIVALIK', tonnes: 30000, arrivalStr: '02-Sep-2025 04:30' }
+                ] 
+            } 
+        };
+        
         const allBerthNames = [...new Set(Object.keys(berthSpecifications))];
 
         // --- SIMULATION LOGIC ---
@@ -239,9 +436,20 @@
         let vessels = [];
         let simulationTime;
         let currentDay = 29;
-        let vesselDepartureCache = {};
-        let berthHistory = {}; // NEW: Persistent history for each berth
-        let activityLog = []; // NEW: Real-time log of events
+        let berthHistory = {};
+        let activityLog = [];
+        let simulationInterval = null;
+        let totalWaitTimeForDay = 0;
+        let totalTimeOptimizedForDay = 0;
+        let dailyStats = {
+            totalWaitTime: 0,
+            totalTimeOptimized: 0,
+            vesselsBerthed: 0,
+            vesselsWaiting: 0
+        };
+
+        // Track ongoing vessel services across days
+        let ongoingVesselServices = {};
 
         function init() {
             setupDay(currentDay);
@@ -251,11 +459,8 @@
             });
 
             document.getElementById('resetDataBtn').addEventListener('click', () => setupDay(currentDay));
-            document.getElementById('runOptimizationBtn').addEventListener('click', () => {
-                simulationTime.setHours(simulationTime.getHours() + 1);
-                runOptimization();
-                renderDashboard();
-            });
+            document.getElementById('runOptimizationBtn').addEventListener('click', startDailySimulation);
+            document.getElementById('stopSimulationBtn').addEventListener('click', stopSimulation);
 
             // Modal close listeners
             document.getElementById('modal-close-btn').addEventListener('click', closeBerthHistoryModal);
@@ -263,19 +468,30 @@
         }
         
         function setupDay(day) {
+            // Stop any running simulation
+            stopSimulation();
+            
             currentDay = day;
-            const month = (day >= 1 && day <= 2) ? 9 : 8; // JS month is 0-indexed (Sep=8, Oct=9)
+            const month = (day >= 1 && day <= 2) ? 9 : 8;
             const year = 2025;
             simulationTime = new Date(year, month, day, 6, 0, 0);
             
-            if (day === 27 && month === 8) { 
-                berthHistory = {}; 
-                activityLog = [];
-                vesselDepartureCache = {};
-                logActivity(`Simulation started for ${simulationTime.toLocaleDateString()}`, 'start');
-            } else {
-                logActivity(`Simulation advanced to ${simulationTime.toLocaleDateString()}`, 'start');
+            // Reset daily stats
+            totalWaitTimeForDay = 0;
+            totalTimeOptimizedForDay = 0;
+            dailyStats = {
+                totalWaitTime: 0,
+                totalTimeOptimized: 0,
+                vesselsBerthed: 0,
+                vesselsWaiting: 0
+            };
+            
+            // Initialize or preserve ongoing services
+            if (!ongoingVesselServices) {
+                ongoingVesselServices = {};
             }
+            
+            logActivity(`Simulation initialized for ${simulationTime.toLocaleDateString()}`, 'start');
             
             document.querySelectorAll('.date-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(`day${day}Btn`).classList.add('active');
@@ -290,25 +506,38 @@
             
             const dayData = portDataByDay[currentDay];
             
+            // Initialize berths
             allBerthNames.forEach((name, index) => {
                 const spec = berthSpecifications[name] || { loa: 200, draft: 12 };
-                berths.push({ id: index + 1, name: name, loa: spec.loa, draft: spec.draft, isOccupied: false, occupiedBy: null, freeAfter: null });
+                berths.push({ 
+                    id: index + 1, 
+                    name: name, 
+                    loa: spec.loa, 
+                    draft: spec.draft, 
+                    isOccupied: false, 
+                    occupiedBy: null, 
+                    freeAfter: null 
+                });
                 if (!berthHistory[name]) berthHistory[name] = [];
             });
 
+            // Set up pre-berthed vessels - FIXED LOGIC
             dayData.occupancy.forEach((occupiedBerthData, index) => {
                 const berth = berths.find(b => b.name === occupiedBerthData.berthName);
                 if (berth) {
                     berth.isOccupied = true;
                     const vesselName = occupiedBerthData.vesselName;
+                    
+                    // Check if this vessel was already in service from previous day
                     let departureTime;
-
-                    if (vesselDepartureCache[vesselName]) {
-                        departureTime = vesselDepartureCache[vesselName];
+                    if (ongoingVesselServices[vesselName]) {
+                        // Continue with existing service time
+                        departureTime = ongoingVesselServices[vesselName];
                     } else {
-                        const serviceHours = 8 + Math.random() * 24; 
+                        // Create new service time
+                        const serviceHours = 8 + Math.random() * 24;
                         departureTime = new Date(simulationTime.getTime() + serviceHours * 60 * 60 * 1000);
-                        vesselDepartureCache[vesselName] = departureTime;
+                        ongoingVesselServices[vesselName] = departureTime;
                     }
                     
                     const vessel = createVessel(vesselName, 50000);
@@ -323,13 +552,22 @@
                     berth.occupiedBy = vessel.id;
                     berth.freeAfter = departureTime;
 
-                    const isAlreadyInHistory = berthHistory[berth.name].some(rec => rec.vesselName === vessel.name && rec.status === 'Berthed');
+                    const isAlreadyInHistory = berthHistory[berth.name].some(rec => 
+                        rec.vesselName === vessel.name && rec.status === 'Berthed' && 
+                        rec.berthingTime.getTime() === vessel.berthingTime.getTime()
+                    );
                     if (!isAlreadyInHistory) {
-                        berthHistory[berth.name].push({ vesselName: vessel.name, berthingTime: vessel.berthingTime, departureTime: vessel.departureTime, status: 'Berthed' });
+                        berthHistory[berth.name].push({ 
+                            vesselName: vessel.name, 
+                            berthingTime: vessel.berthingTime, 
+                            departureTime: vessel.departureTime, 
+                            status: 'Berthed' 
+                        });
                     }
                 }
             });
 
+            // Set up waiting vessels
             const waitingVesselsData = JSON.parse(JSON.stringify(dayData.waiting));
             waitingVesselsData.forEach((v, i) => {
                 const newVessel = createVessel(v.name, v.tonnes);
@@ -341,31 +579,106 @@
         
         function createVessel(name, tonnes) {
             let size, loa, draft;
-            if (tonnes < 20000) { size = 'Small'; loa = 100 + Math.random() * 60; draft = 8 + Math.random() * 2; } 
-            else if (tonnes < 80000) { size = 'Medium'; loa = 161 + Math.random() * 70; draft = 10.1 + Math.random() * 3; } 
-            else { size = 'Large'; loa = 231 + Math.random() * 70; draft = 13.2 + Math.random() * 3; }
-            return { name: name, size: size, loa: parseFloat(loa.toFixed(2)), draft: parseFloat(draft.toFixed(2)), berthingTime: null, departureTime: null, status: 'Waiting', assignedBerthId: null };
+            if (tonnes < 20000) { 
+                size = 'Small'; 
+                loa = 100 + Math.random() * 60; 
+                draft = 8 + Math.random() * 2; 
+            } else if (tonnes < 80000) { 
+                size = 'Medium'; 
+                loa = 161 + Math.random() * 70; 
+                draft = 10.1 + Math.random() * 3; 
+            } else { 
+                size = 'Large'; 
+                loa = 231 + Math.random() * 70; 
+                draft = 13.2 + Math.random() * 3; 
+            }
+            return { 
+                name: name, 
+                size: size, 
+                loa: parseFloat(loa.toFixed(2)), 
+                draft: parseFloat(draft.toFixed(2)), 
+                berthingTime: null, 
+                departureTime: null, 
+                status: 'Waiting', 
+                assignedBerthId: null 
+            };
+        }
+
+        function startDailySimulation() {
+            // Disable run button, enable stop button
+            document.getElementById('runOptimizationBtn').classList.add('hidden');
+            document.getElementById('stopSimulationBtn').classList.remove('hidden');
+            
+            logActivity(`Daily simulation started. Running for 24 hours...`, 'start');
+            
+            // Run simulation for 24 hours (24 steps of 1 hour each)
+            let hoursSimulated = 0;
+            const totalHours = 24;
+            
+            simulationInterval = setInterval(() => {
+                if (hoursSimulated >= totalHours) {
+                    stopSimulation();
+                    logActivity(`Daily simulation completed. Total wait time: ${totalWaitTimeForDay.toFixed(2)} hours, Time optimized: ${totalTimeOptimizedForDay.toFixed(2)} hours`, 'completion');
+                    return;
+                }
+                
+                // Advance time by 1 hour
+                simulationTime.setHours(simulationTime.getHours() + 1);
+                runOptimization();
+                renderDashboard();
+                hoursSimulated++;
+                
+                // Update progress
+                if (hoursSimulated % 6 === 0) { // Log every 6 hours
+                    logActivity(`Simulation progress: ${hoursSimulated}/24 hours completed`, 'progress');
+                }
+            }, 1000); // Run every second for demo purposes
+        }
+        
+        function stopSimulation() {
+            if (simulationInterval) {
+                clearInterval(simulationInterval);
+                simulationInterval = null;
+            }
+            
+            // Re-enable run button, disable stop button
+            document.getElementById('runOptimizationBtn').classList.remove('hidden');
+            document.getElementById('stopSimulationBtn').classList.add('hidden');
+            
+            logActivity(`Simulation stopped manually`, 'stop');
         }
 
         function runOptimization() {
+            // Process departures - FIXED LOGIC: Only depart if service is actually complete
             berths.forEach(b => {
-                if (b.isOccupied && b.freeAfter && b.freeAfter < simulationTime) {
+                if (b.isOccupied && b.freeAfter && b.freeAfter <= simulationTime) {
                     const departedVessel = vessels.find(v => v.id === b.occupiedBy);
                     if (departedVessel) {
                         departedVessel.status = 'Departed';
-                        logActivity(`<strong>${departedVessel.name}</strong> has departed from Berth <strong>${b.name}</strong>.`, 'departure');
+                        logActivity(`<strong>${departedVessel.name}</strong> has departed from Berth <strong>${b.name}</strong> at ${simulationTime.toLocaleTimeString()}.`, 'departure');
                         
-                        const historyRecord = berthHistory[b.name]?.find(rec => rec.vesselName === departedVessel.name && rec.status === 'Berthed');
+                        // Remove from ongoing services
+                        delete ongoingVesselServices[departedVessel.name];
+                        
+                        const historyRecord = berthHistory[b.name]?.find(rec => 
+                            rec.vesselName === departedVessel.name && 
+                            rec.status === 'Berthed' &&
+                            rec.berthingTime.getTime() === departedVessel.berthingTime.getTime()
+                        );
                         if (historyRecord) {
                             historyRecord.status = 'Departed';
-                            historyRecord.departureTime = simulationTime;
+                            historyRecord.departureTime = new Date(simulationTime);
                         }
                     }
-                    b.isOccupied = false; b.occupiedBy = null; b.freeAfter = null;
+                    b.isOccupied = false; 
+                    b.occupiedBy = null; 
+                    b.freeAfter = null;
                 }
             });
 
-            const vesselsToAssign = vessels.filter(v => v.status === 'Waiting' && v.arrivalTime <= simulationTime).sort((a, b) => a.arrivalTime - b.arrivalTime);
+            // Process waiting vessels
+            const vesselsToAssign = vessels.filter(v => v.status === 'Waiting' && v.arrivalTime <= simulationTime)
+                                          .sort((a, b) => a.arrivalTime - b.arrivalTime);
             const availableBerths = berths.filter(b => !b.isOccupied);
 
             for (const vessel of vesselsToAssign) {
@@ -389,13 +702,33 @@
                     originalBerth.occupiedBy = vessel.id;
                     originalBerth.freeAfter = vessel.departureTime;
 
-                    logActivity(`<strong>${vessel.name}</strong> has berthed at <strong>${originalBerth.name}</strong>.`, 'berthing');
-                    berthHistory[originalBerth.name].push({ vesselName: vessel.name, berthingTime: vessel.berthingTime, departureTime: vessel.departureTime, status: 'Berthed' });
+                    // Track ongoing service
+                    ongoingVesselServices[vessel.name] = vessel.departureTime;
+
+                    // Calculate wait time and add to daily total - FIXED CALCULATION
+                    const waitTimeHours = (vessel.berthingTime - vessel.arrivalTime) / (1000 * 60 * 60);
+                    totalWaitTimeForDay += waitTimeHours;
+                    
+                    // Calculate time optimized - FIXED REALISTIC CALCULATION
+                    // Use industry standard: target wait time of 4 hours, anything below is optimized
+                    const targetWaitTimeHours = 4;
+                    const timeOptimized = Math.max(0, targetWaitTimeHours - waitTimeHours);
+                    totalTimeOptimizedForDay += timeOptimized;
+
+                    logActivity(`<strong>${vessel.name}</strong> berthed at <strong>${originalBerth.name}</strong>. Wait time: ${waitTimeHours.toFixed(2)}h`, 'berthing');
+                    berthHistory[originalBerth.name].push({ 
+                        vesselName: vessel.name, 
+                        berthingTime: vessel.berthingTime, 
+                        departureTime: vessel.departureTime, 
+                        status: 'Berthed' 
+                    });
                 }
             }
         }
         
-        function isCompatible(vessel, berth) { return vessel.loa <= berth.loa && vessel.draft <= berth.draft; }
+        function isCompatible(vessel, berth) { 
+            return vessel.loa <= berth.loa && vessel.draft <= berth.draft; 
+        }
 
         function logActivity(message, type) {
             activityLog.unshift({ timestamp: new Date(simulationTime), message, type });
@@ -428,13 +761,13 @@
                         <div class="font-bold text-lg text-slate-800 dark:text-slate-100">${berth.name}</div>
                         ${statusPill}
                     </div>
-                    <div class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                    <div class="text-sm text-slate-600 dark:text-slate-300 mt-1">
                         LOA: ${berth.loa}m | Draft: ${berth.draft}m
                     </div>`;
                 if (isOccupied && vessel) {
                     content += `<div class="mt-3 pt-3 border-t border-slate-200 dark:border-slate-700">
                         <div class="text-sm font-semibold text-indigo-600 dark:text-indigo-400 truncate">${vessel.name}</div>
-                        <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                        <div class="text-xs text-slate-600 dark:text-slate-300 mt-1">
                             Free: ${berth.freeAfter.toLocaleString([], { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                         </div>
                     </div>`;
@@ -448,13 +781,16 @@
             const logContainer = document.getElementById('activity-log');
             logContainer.innerHTML = '';
             if (activityLog.length === 0) {
-                logContainer.innerHTML = `<p class="text-sm text-slate-500 dark:text-slate-400 text-center py-4">No activity yet.</p>`;
+                logContainer.innerHTML = `<p class="text-sm text-slate-600 dark:text-slate-400 text-center py-4">No activity yet.</p>`;
                 return;
             }
             const iconMap = {
                 berthing: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414l-3-3z" clip-rule="evenodd" /></svg>`,
                 departure: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414l-3-3z" clip-rule="evenodd" transform="rotate(180 10 10)"/></svg>`,
-                start: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.414-1.415L11 9.586V6z" clip-rule="evenodd" /></svg>`
+                start: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.414-1.415L11 9.586V6z" clip-rule="evenodd" /></svg>`,
+                progress: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd" /></svg>`,
+                completion: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>`,
+                stop: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1V8a1 1 0 00-1-1H8z" clip-rule="evenodd" /></svg>`
             };
             activityLog.forEach(item => {
                 const logItem = document.createElement('div');
@@ -463,7 +799,7 @@
                     <div class="flex-shrink-0 pt-1">${iconMap[item.type] || ''}</div>
                     <div>
                         <p class="text-sm text-slate-800 dark:text-slate-200">${item.message}</p>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">${item.timestamp.toLocaleTimeString()}</p>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">${item.timestamp.toLocaleTimeString()}</p>
                     </div>`;
                 logContainer.appendChild(logItem);
             });
@@ -477,7 +813,7 @@
             const history = berthHistory[berth.name] || [];
 
             if (history.length === 0) {
-                list.innerHTML = `<li class="text-center text-slate-500 dark:text-slate-400 py-6">No service history recorded for this berth.</li>`;
+                list.innerHTML = `<li class="text-center text-slate-600 dark:text-slate-400 py-6">No service history recorded for this berth.</li>`;
             } else {
                 [...history].reverse().forEach(record => {
                     const item = document.createElement('li');
@@ -490,7 +826,7 @@
                             <p class="font-bold text-lg text-indigo-600 dark:text-indigo-400">${record.vesselName}</p>
                             ${statusPill}
                         </div>
-                        <div class="text-xs text-slate-500 dark:text-slate-400 mt-2 grid grid-cols-2 gap-2">
+                        <div class="text-xs text-slate-600 dark:text-slate-300 mt-2 grid grid-cols-2 gap-2">
                            <p><strong>Berthed:</strong> ${record.berthingTime.toLocaleString()}</p>
                            <p><strong>Departure:</strong> ${record.departureTime.toLocaleString()}</p>
                         </div>`;
@@ -516,13 +852,99 @@
             }, 300);
         }
 
-        // --- Other Rendering Functions (Minified for brevity) ---
-        function renderWaitingList(){const e=document.getElementById("waiting-vessels-list");e.innerHTML="";const t=vessels.filter(e=>"Waiting"===e.status).sort((e,t)=>e.arrivalTime-t.arrivalTime);if(0===t.length){e.innerHTML='<p class="text-sm text-slate-500 dark:text-slate-400 text-center py-4">No vessels are currently waiting.</p>';return}t.forEach(t=>{const s=document.createElement("div");s.className="p-3 bg-slate-100 dark:bg-slate-800/50 rounded-lg",s.innerHTML=`\n <div class="flex justify-between items-center">\n <p class="font-semibold text-slate-800 dark:text-slate-200">${t.name}</p>\n <span class="text-xs font-medium text-amber-600 dark:text-amber-400">Waiting</span>\n </div>\n <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">\n Arrival: ${t.arrivalTime.toLocaleString()}\n </p>`,e.appendChild(s)})}
-        function renderAnalytics(){const e=document.getElementById("analytics-content"),t=vessels.filter(e=>"Berthed"===e.status).length,s=vessels.filter(e=>"Waiting"===e.status).length;let l=0;vessels.filter(e=>"Berthed"===e.status&&e.id&&e.id.startsWith(`V-waiting-${currentDay}`)).forEach(e=>{l+=Math.max(0,e.berthingTime-e.arrivalTime)});const n=(l/36e5).toFixed(2);e.innerHTML=`\n <div class="flex items-start gap-4">\n <div class="flex-shrink-0 w-10 h-10 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center">\n <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>\n </div>\n <div>\n <p class="text-sm text-slate-500 dark:text-slate-400">Vessels Berthed</p>\n <p class="text-2xl font-bold text-slate-800 dark:text-slate-100">${t}</p>\n </div>\n </div>\n <div class="flex items-start gap-4">\n <div class="flex-shrink-0 w-10 h-10 bg-amber-100 dark:bg-amber-900/50 text-amber-600 dark:text-amber-400 rounded-lg flex items-center justify-center">\n <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>\n </div>\n <div>\n <p class="text-sm text-slate-500 dark:text-slate-400">Vessels Waiting</p>\n <p class="text-2xl font-bold text-slate-800 dark:text-slate-100">${s}</p>\n </div>\n </div>\n <div class="flex items-start gap-4 pt-2 mt-2 border-t border-slate-200 dark:border-slate-700">\n <div class="flex-shrink-0 w-10 h-10 bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400 rounded-lg flex items-center justify-center">\n <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>\n </div>\n <div>\n <p class="text-sm text-slate-500 dark:text-slate-400">Total Wait Time (Cost)</p>\n <p class="text-2xl font-bold text-red-600 dark:text-red-400">${n} <span class="text-lg font-medium">hours</span></p>\n </div>\n </div>\n <p class="text-xs text-center text-slate-400 dark:text-slate-500 pt-2">Sim Time: ${simulationTime.toLocaleString()}</p>`}
-        function renderAllotmentPlan(){const e=document.getElementById("allotment-plan-body");e.innerHTML="";const t=vessels.filter(e=>"Berthed"===e.status&&e.id&&e.id.startsWith(`V-waiting-${currentDay}`)).sort((e,t)=>e.berthingTime-t.berthingTime);if(0===t.length){e.innerHTML='<tr><td colspan="5" class="text-center text-slate-500 dark:text-slate-400 py-8">Run optimization to generate an allotment plan.</td></tr>';return}t.forEach(t=>{const s=berths.find(e=>e.id===t.assignedBerthId),l=(Math.max(0,t.berthingTime-t.arrivalTime)/36e5).toFixed(2),n=document.createElement("tr");n.className="border-b border-slate-200 dark:border-slate-700",n.innerHTML=`\n <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-800 dark:text-slate-100">${t.name}</td>\n <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">${s?s.name:"N/A"}</td>\n <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">${t.arrivalTime.toLocaleString()}</td>\n <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">${t.berthingTime.toLocaleString()}</td>\n <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-red-600 dark:text-red-400">${l} hours</td>\n `,e.appendChild(n)})}
+        function renderWaitingList(){
+            const e=document.getElementById("waiting-vessels-list");
+            e.innerHTML="";
+            const t=vessels.filter(e=>"Waiting"===e.status).sort((e,t)=>e.arrivalTime-t.arrivalTime);
+            if(0===t.length){
+                e.innerHTML='<p class="text-sm text-slate-600 dark:text-slate-400 text-center py-4">No vessels are currently waiting.</p>';
+                return
+            }
+            t.forEach(t=>{
+                const s=document.createElement("div");
+                s.className="p-3 bg-slate-100 dark:bg-slate-800/50 rounded-lg",
+                s.innerHTML=`
+                <div class="flex justify-between items-center">
+                    <p class="font-semibold text-slate-800 dark:text-slate-200">${t.name}</p>
+                    <span class="text-xs font-medium text-amber-600 dark:text-amber-400">Waiting</span>
+                </div>
+                <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                    Arrival: ${t.arrivalTime.toLocaleString()}
+                </p>`,
+                e.appendChild(s)
+            })
+        }
+
+        function renderAnalytics(){
+            const e=document.getElementById("analytics-content"),
+            t=vessels.filter(e=>"Berthed"===e.status).length,
+            s=vessels.filter(e=>"Waiting"===e.status).length;
+            
+            e.innerHTML=`
+            <div class="flex items-start gap-4">
+                <div class="flex-shrink-0 w-10 h-10 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+                </div>
+                <div>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">Vessels Berthed</p>
+                    <p class="text-2xl font-bold text-slate-800 dark:text-slate-100">${t}</p>
+                </div>
+            </div>
+            <div class="flex items-start gap-4">
+                <div class="flex-shrink-0 w-10 h-10 bg-amber-100 dark:bg-amber-900/50 text-amber-600 dark:text-amber-400 rounded-lg flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                </div>
+                <div>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">Vessels Waiting</p>
+                    <p class="text-2xl font-bold text-slate-800 dark:text-slate-100">${s}</p>
+                </div>
+            </div>
+            <div class="flex items-start gap-4 pt-2 mt-2 border-t border-slate-200 dark:border-slate-700">
+                <div class="flex-shrink-0 w-10 h-10 bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400 rounded-lg flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                </div>
+                <div>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">Total Wait Time (Cost)</p>
+                    <p class="text-2xl font-bold text-red-600 dark:text-red-400">${totalWaitTimeForDay.toFixed(2)} <span class="text-lg font-medium">hours</span></p>
+                </div>
+            </div>
+            <div class="flex items-start gap-4 pt-2">
+                <div class="flex-shrink-0 w-10 h-10 bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 rounded-lg flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                </div>
+                <div>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">Total Time Optimized</p>
+                    <p class="text-2xl font-bold text-green-600 dark:text-green-400">${totalTimeOptimizedForDay.toFixed(2)} <span class="text-lg font-medium">hours</span></p>
+                </div>
+            </div>
+            <p class="text-xs text-center text-slate-600 dark:text-slate-400 pt-2">Sim Time: ${simulationTime.toLocaleString()}</p>`
+        }
+
+        function renderAllotmentPlan(){
+            const e=document.getElementById("allotment-plan-body");
+            e.innerHTML="";
+            const t=vessels.filter(e=>"Berthed"===e.status&&e.id&&e.id.startsWith(`V-waiting-${currentDay}`)).sort((e,t)=>e.berthingTime-t.berthingTime);
+            if(0===t.length){
+                e.innerHTML='<tr><td colspan="5" class="text-center text-slate-600 dark:text-slate-400 py-8">Run optimization to generate an allotment plan.</td></tr>';
+                return
+            }
+            t.forEach(t=>{
+                const s=berths.find(e=>e.id===t.assignedBerthId),
+                l=(Math.max(0,t.berthingTime-t.arrivalTime)/36e5).toFixed(2),
+                n=document.createElement("tr");
+                n.className="border-b border-slate-200 dark:border-slate-700",
+                n.innerHTML=`
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-800 dark:text-slate-100">${t.name}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-300">${s?s.name:"N/A"}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-300">${t.arrivalTime.toLocaleString()}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-300">${t.berthingTime.toLocaleString()}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-red-600 dark:text-red-400">${l} hours</td>
+                `,
+                e.appendChild(n)
+            })
+        }
 
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
-
