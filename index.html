@@ -10,8 +10,8 @@
         :root {
             --bg-light: #f4f7fa;
             --bg-dark: #111827;
-            --card-light: rgba(255, 255, 255, 0.7);
-            --card-dark: rgba(31, 41, 55, 0.7);
+            --card-light: rgba(255, 255, 255, 0.65);
+            --card-dark: rgba(31, 41, 55, 0.65);
             --border-light: #e5e7eb;
             --border-dark: #374151;
             --text-light: #1f2937;
@@ -30,25 +30,33 @@
             background-color: var(--bg-dark);
             color: var(--text-dark);
         }
+        
         .background-blur {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100vh;
-            background: radial-gradient(circle at 10% 20%, rgba(96, 165, 250, 0.1), transparent 30%),
-                        radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.1), transparent 30%);
+            right: 0;
+            bottom: 0;
             z-index: -1;
+            animation: animate-glow 25s ease-in-out infinite alternate;
         }
-        .dark .background-blur {
-             background: radial-gradient(circle at 10% 20%, rgba(96, 165, 250, 0.15), transparent 40%),
-                        radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.15), transparent 40%);
+        
+        @keyframes animate-glow {
+            from {
+                background: radial-gradient(circle at 10% 20%, rgba(96, 165, 250, 0.2), transparent 40%),
+                            radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.2), transparent 40%);
+            }
+            to {
+                background: radial-gradient(circle at 80% 15%, rgba(96, 165, 250, 0.2), transparent 40%),
+                            radial-gradient(circle at 20% 85%, rgba(139, 92, 246, 0.2), transparent 40%);
+            }
         }
+
         .glass-card {
             background: var(--card-light);
             border: 1px solid var(--border-light);
-            backdrop-filter: blur(16px) saturate(180%);
-            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
             transition: all 0.3s ease;
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
         }
@@ -67,12 +75,14 @@
             box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.39);
         }
         .primary-btn {
-            background-image: linear-gradient(to right, #4f46e5 0%, #a21caf 51%, #4f46e5 100%);
-            background-size: 200% auto;
-            transition: background-position 0.5s;
+            background-color: #4f46e5;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.3);
         }
         .primary-btn:hover {
-            background-position: right center;
+            background-color: #4338ca;
+            box-shadow: 0 6px 20px 0 rgba(79, 70, 229, 0.35);
+            transform: translateY(-2px);
         }
         .modal-hidden {
             display: none;
@@ -94,7 +104,7 @@
                     </svg>
                 </div>
                 <div>
-                    <h1 class="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-400">Berth Allocation AI</h1>
+                    <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white">Berth Allocation AI</h1>
                     <p class="text-base text-slate-500 dark:text-slate-400">Visakhapatnam Port Authority</p>
                 </div>
             </div>
@@ -126,7 +136,7 @@
                         <button id="resetDataBtn" class="w-full bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold py-3 px-4 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition duration-300">
                             Reset Day
                         </button>
-                        <button id="runOptimizationBtn" class="primary-btn w-full text-white font-bold py-3 px-4 rounded-lg hover:opacity-90 transition duration-300 shadow-lg text-lg flex items-center justify-center gap-2">
+                        <button id="runOptimizationBtn" class="primary-btn w-full text-white font-bold py-3 px-4 rounded-lg transition duration-300 shadow-lg text-lg flex items-center justify-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
                             </svg>
@@ -258,10 +268,10 @@
             const year = 2025;
             simulationTime = new Date(year, month, day, 6, 0, 0);
             
-            // CRITICAL: Only reset history if it's the very first day of the simulation
             if (day === 27 && month === 8) { 
                 berthHistory = {}; 
                 activityLog = [];
+                vesselDepartureCache = {};
                 logActivity(`Simulation started for ${simulationTime.toLocaleDateString()}`, 'start');
             } else {
                 logActivity(`Simulation advanced to ${simulationTime.toLocaleDateString()}`, 'start');
@@ -283,7 +293,7 @@
             allBerthNames.forEach((name, index) => {
                 const spec = berthSpecifications[name] || { loa: 200, draft: 12 };
                 berths.push({ id: index + 1, name: name, loa: spec.loa, draft: spec.draft, isOccupied: false, occupiedBy: null, freeAfter: null });
-                if (!berthHistory[name]) berthHistory[name] = []; // Initialize history array if not present
+                if (!berthHistory[name]) berthHistory[name] = [];
             });
 
             dayData.occupancy.forEach((occupiedBerthData, index) => {
@@ -313,15 +323,9 @@
                     berth.occupiedBy = vessel.id;
                     berth.freeAfter = departureTime;
 
-                    // Add to persistent history if not already there from a previous day
                     const isAlreadyInHistory = berthHistory[berth.name].some(rec => rec.vesselName === vessel.name && rec.status === 'Berthed');
                     if (!isAlreadyInHistory) {
-                        berthHistory[berth.name].push({
-                            vesselName: vessel.name,
-                            berthingTime: vessel.berthingTime,
-                            departureTime: vessel.departureTime,
-                            status: 'Berthed'
-                        });
+                        berthHistory[berth.name].push({ vesselName: vessel.name, berthingTime: vessel.berthingTime, departureTime: vessel.departureTime, status: 'Berthed' });
                     }
                 }
             });
@@ -351,11 +355,10 @@
                         departedVessel.status = 'Departed';
                         logActivity(`<strong>${departedVessel.name}</strong> has departed from Berth <strong>${b.name}</strong>.`, 'departure');
                         
-                        // Update the persistent history record to 'Departed'
                         const historyRecord = berthHistory[b.name]?.find(rec => rec.vesselName === departedVessel.name && rec.status === 'Berthed');
                         if (historyRecord) {
                             historyRecord.status = 'Departed';
-                            historyRecord.departureTime = simulationTime; // Log actual departure time
+                            historyRecord.departureTime = simulationTime;
                         }
                     }
                     b.isOccupied = false; b.occupiedBy = null; b.freeAfter = null;
@@ -387,14 +390,7 @@
                     originalBerth.freeAfter = vessel.departureTime;
 
                     logActivity(`<strong>${vessel.name}</strong> has berthed at <strong>${originalBerth.name}</strong>.`, 'berthing');
-
-                    // Add to persistent history
-                    berthHistory[originalBerth.name].push({
-                        vesselName: vessel.name,
-                        berthingTime: vessel.berthingTime,
-                        departureTime: vessel.departureTime,
-                        status: 'Berthed'
-                    });
+                    berthHistory[originalBerth.name].push({ vesselName: vessel.name, berthingTime: vessel.berthingTime, departureTime: vessel.departureTime, status: 'Berthed' });
                 }
             }
         }
@@ -403,7 +399,7 @@
 
         function logActivity(message, type) {
             activityLog.unshift({ timestamp: new Date(simulationTime), message, type });
-            if (activityLog.length > 50) activityLog.pop(); // Keep log size manageable
+            if (activityLog.length > 50) activityLog.pop();
         }
 
         // --- UI RENDERING & INTERACTION ---
@@ -421,15 +417,12 @@
             berths.sort((a,b)=> a.id - b.id).forEach(berth => {
                 const isOccupied = berth.isOccupied;
                 const vessel = isOccupied ? vessels.find(v => v.id === berth.occupiedBy) : null;
-                
                 const statusPill = isOccupied 
                     ? `<div class="text-xs font-bold uppercase tracking-wider text-red-800 bg-red-200 dark:text-red-200 dark:bg-red-800/50 px-2 py-1 rounded-full">Occupied</div>`
                     : `<div class="text-xs font-bold uppercase tracking-wider text-green-800 bg-green-200 dark:text-green-200 dark:bg-green-800/50 px-2 py-1 rounded-full">Available</div>`;
-
                 const card = document.createElement('div');
                 card.className = `glass-card-interactive p-4 rounded-xl flex flex-col justify-between min-h-[160px] bg-slate-50/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 cursor-pointer`;
                 card.addEventListener('click', () => openBerthHistoryModal(berth));
-                
                 let content = `
                     <div class="flex justify-between items-center">
                         <div class="font-bold text-lg text-slate-800 dark:text-slate-100">${berth.name}</div>
@@ -438,7 +431,6 @@
                     <div class="text-sm text-slate-500 dark:text-slate-400 mt-1">
                         LOA: ${berth.loa}m | Draft: ${berth.draft}m
                     </div>`;
-
                 if (isOccupied && vessel) {
                     content += `<div class="mt-3 pt-3 border-t border-slate-200 dark:border-slate-700">
                         <div class="text-sm font-semibold text-indigo-600 dark:text-indigo-400 truncate">${vessel.name}</div>
@@ -459,13 +451,11 @@
                 logContainer.innerHTML = `<p class="text-sm text-slate-500 dark:text-slate-400 text-center py-4">No activity yet.</p>`;
                 return;
             }
-
             const iconMap = {
                 berthing: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414l-3-3z" clip-rule="evenodd" /></svg>`,
                 departure: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414l-3-3z" clip-rule="evenodd" transform="rotate(180 10 10)"/></svg>`,
                 start: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.414-1.415L11 9.586V6z" clip-rule="evenodd" /></svg>`
             };
-            
             activityLog.forEach(item => {
                 const logItem = document.createElement('div');
                 logItem.className = 'flex items-start gap-3';
@@ -481,25 +471,20 @@
 
         function openBerthHistoryModal(berth) {
             const modal = document.getElementById('berth-history-modal');
-            const title = document.getElementById('modal-title');
+            document.getElementById('modal-title').textContent = `Berth ${berth.name} - Service History`;
             const list = document.getElementById('modal-history-list');
-
-            title.textContent = `Berth ${berth.name} - Service History`;
             list.innerHTML = '';
-
             const history = berthHistory[berth.name] || [];
 
             if (history.length === 0) {
                 list.innerHTML = `<li class="text-center text-slate-500 dark:text-slate-400 py-6">No service history recorded for this berth.</li>`;
             } else {
-                [...history].reverse().forEach(record => { // Show most recent first
+                [...history].reverse().forEach(record => {
                     const item = document.createElement('li');
                     item.className = 'p-4 bg-slate-100 dark:bg-slate-800/50 rounded-lg';
-                    
                     const statusPill = record.status === 'Berthed'
                         ? `<span class="px-2 py-1 text-xs font-semibold text-green-800 bg-green-200 dark:text-green-100 dark:bg-green-500/50 rounded-full">Active</span>`
                         : `<span class="px-2 py-1 text-xs font-semibold text-slate-600 bg-slate-200 dark:text-slate-300 dark:bg-slate-600/50 rounded-full">Departed</span>`;
-
                     item.innerHTML = `
                         <div class="flex justify-between items-center">
                             <p class="font-bold text-lg text-indigo-600 dark:text-indigo-400">${record.vesselName}</p>
@@ -507,9 +492,8 @@
                         </div>
                         <div class="text-xs text-slate-500 dark:text-slate-400 mt-2 grid grid-cols-2 gap-2">
                            <p><strong>Berthed:</strong> ${record.berthingTime.toLocaleString()}</p>
-                           <p><strong>Est. Departure:</strong> ${record.departureTime.toLocaleString()}</p>
-                        </div>
-                    `;
+                           <p><strong>Departure:</strong> ${record.departureTime.toLocaleString()}</p>
+                        </div>`;
                     list.appendChild(item);
                 });
             }
@@ -532,7 +516,7 @@
             }, 300);
         }
 
-        // --- Other Rendering Functions (Mostly Unchanged) ---
+        // --- Other Rendering Functions (Minified for brevity) ---
         function renderWaitingList(){const e=document.getElementById("waiting-vessels-list");e.innerHTML="";const t=vessels.filter(e=>"Waiting"===e.status).sort((e,t)=>e.arrivalTime-t.arrivalTime);if(0===t.length){e.innerHTML='<p class="text-sm text-slate-500 dark:text-slate-400 text-center py-4">No vessels are currently waiting.</p>';return}t.forEach(t=>{const s=document.createElement("div");s.className="p-3 bg-slate-100 dark:bg-slate-800/50 rounded-lg",s.innerHTML=`\n <div class="flex justify-between items-center">\n <p class="font-semibold text-slate-800 dark:text-slate-200">${t.name}</p>\n <span class="text-xs font-medium text-amber-600 dark:text-amber-400">Waiting</span>\n </div>\n <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">\n Arrival: ${t.arrivalTime.toLocaleString()}\n </p>`,e.appendChild(s)})}
         function renderAnalytics(){const e=document.getElementById("analytics-content"),t=vessels.filter(e=>"Berthed"===e.status).length,s=vessels.filter(e=>"Waiting"===e.status).length;let l=0;vessels.filter(e=>"Berthed"===e.status&&e.id&&e.id.startsWith(`V-waiting-${currentDay}`)).forEach(e=>{l+=Math.max(0,e.berthingTime-e.arrivalTime)});const n=(l/36e5).toFixed(2);e.innerHTML=`\n <div class="flex items-start gap-4">\n <div class="flex-shrink-0 w-10 h-10 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center">\n <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>\n </div>\n <div>\n <p class="text-sm text-slate-500 dark:text-slate-400">Vessels Berthed</p>\n <p class="text-2xl font-bold text-slate-800 dark:text-slate-100">${t}</p>\n </div>\n </div>\n <div class="flex items-start gap-4">\n <div class="flex-shrink-0 w-10 h-10 bg-amber-100 dark:bg-amber-900/50 text-amber-600 dark:text-amber-400 rounded-lg flex items-center justify-center">\n <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>\n </div>\n <div>\n <p class="text-sm text-slate-500 dark:text-slate-400">Vessels Waiting</p>\n <p class="text-2xl font-bold text-slate-800 dark:text-slate-100">${s}</p>\n </div>\n </div>\n <div class="flex items-start gap-4 pt-2 mt-2 border-t border-slate-200 dark:border-slate-700">\n <div class="flex-shrink-0 w-10 h-10 bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400 rounded-lg flex items-center justify-center">\n <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>\n </div>\n <div>\n <p class="text-sm text-slate-500 dark:text-slate-400">Total Wait Time (Cost)</p>\n <p class="text-2xl font-bold text-red-600 dark:text-red-400">${n} <span class="text-lg font-medium">hours</span></p>\n </div>\n </div>\n <p class="text-xs text-center text-slate-400 dark:text-slate-500 pt-2">Sim Time: ${simulationTime.toLocaleString()}</p>`}
         function renderAllotmentPlan(){const e=document.getElementById("allotment-plan-body");e.innerHTML="";const t=vessels.filter(e=>"Berthed"===e.status&&e.id&&e.id.startsWith(`V-waiting-${currentDay}`)).sort((e,t)=>e.berthingTime-t.berthingTime);if(0===t.length){e.innerHTML='<tr><td colspan="5" class="text-center text-slate-500 dark:text-slate-400 py-8">Run optimization to generate an allotment plan.</td></tr>';return}t.forEach(t=>{const s=berths.find(e=>e.id===t.assignedBerthId),l=(Math.max(0,t.berthingTime-t.arrivalTime)/36e5).toFixed(2),n=document.createElement("tr");n.className="border-b border-slate-200 dark:border-slate-700",n.innerHTML=`\n <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-800 dark:text-slate-100">${t.name}</td>\n <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">${s?s.name:"N/A"}</td>\n <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">${t.arrivalTime.toLocaleString()}</td>\n <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">${t.berthingTime.toLocaleString()}</td>\n <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-red-600 dark:text-red-400">${l} hours</td>\n `,e.appendChild(n)})}
@@ -541,3 +525,4 @@
     </script>
 </body>
 </html>
+
