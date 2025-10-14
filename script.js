@@ -1,4 +1,4 @@
-        let currentTutorialStep = 1;
+let currentTutorialStep = 1;
         const totalTutorialSteps = 6;
         let tutorialActive = false;
         
@@ -823,7 +823,7 @@
                 }
                 
                 simulationTime.setHours(simulationTime.getHours() + 1);
-                runOptimization();
+                advanceSimulationHour();
                 renderDashboard();
                 hoursSimulated++;
                 
@@ -845,7 +845,8 @@
             logActivity(`Simulation stopped manually`, 'stop');
         }
 
-        function runOptimization() {
+        function advanceSimulationHour() {
+            // Part 1: Update world state by processing departures
             berths.forEach(b => {
                 if (b.isOccupied && b.freeAfter && b.freeAfter <= simulationTime) {
                     const departedVessel = vessels.find(v => v.id === b.occupiedBy);
@@ -872,54 +873,119 @@
                 }
             });
 
-            const vesselsToAssign = vessels.filter(v => v.status === 'Waiting' && v.arrivalTime <= simulationTime)
-                                            .sort((a, b) => a.arrivalTime - b.arrivalTime);
+            // Part 2: Run the optimization algorithm for new assignments
+            optimizeScheduleWithColumnGeneration();
+        }
+
+        /**
+         * Optimizes dock scheduling using a methodology inspired by Column Generation.
+         *
+         * In large-scale optimization, Column Generation is a technique to solve problems
+         * with a vast number of variables (columns). Instead of considering all variables
+         * at once, it starts with a small subset and iteratively generates and adds new,
+         * promising variables until an optimal solution is found.
+         *
+         * This process involves:
+         * 1. A 'Master Problem': The core optimization problem with a restricted set of variables.
+         * 2. A 'Subproblem' (or 'Pricing Problem'): A routine to find a new variable (column)
+         * with a negative reduced cost, which can improve the Master Problem's solution.
+         *
+         * In this simulation, we apply this concept metaphorically:
+         * - A 'Column' represents a potential assignment of a single vessel to a compatible berth.
+         * - The 'Subproblem' is the process of generating all valid potential assignments (columns) and calculating their cost.
+         * - The 'Master Problem' is the process of selecting the best set of non-conflicting
+         * assignments from the generated candidates to minimize total waiting time.
+         */
+        function optimizeScheduleWithColumnGeneration() {
+            const vesselsToAssign = vessels.filter(v => v.status === 'Waiting' && v.arrivalTime <= simulationTime);
             const availableBerths = berths.filter(b => !b.isOccupied);
 
+            if (vesselsToAssign.length === 0 || availableBerths.length === 0) {
+                return; // Nothing to optimize
+            }
+
+            // --- SUBPROBLEM / PRICING PROBLEM: Generate all candidate columns (assignments) ---
+            // Each candidate is a potential assignment with an associated cost.
+            // We aim to prioritize vessels that have been waiting the longest.
+            // The "cost" here is the negative of the waiting time, so minimizing cost
+            // is equivalent to maximizing waiting time (i.e., serving the most overdue vessel).
+            let candidateAssignments = [];
             for (const vessel of vesselsToAssign) {
-                let assignedBerth = null;
-                
-                for (let i = 0; i < availableBerths.length; i++) {
-                    if (isCompatible(vessel, availableBerths[i]) && !availableBerths[i].isOccupied) {
-                        assignedBerth = availableBerths[i];
-                        availableBerths.splice(i, 1);
-                        break;
+                for (const berth of availableBerths) {
+                    if (isCompatible(vessel, berth)) {
+                        const waitingHours = (simulationTime - vessel.arrivalTime) / (1000 * 60 * 60);
+                        candidateAssignments.push({
+                            vessel: vessel,
+                            berth: berth,
+                            cost: -waitingHours, // We want to pick the assignment with the most negative cost
+                            waitingHours: waitingHours
+                        });
                     }
                 }
+            }
 
-                if (assignedBerth && !assignedBerth.isOccupied) { 
+            if (candidateAssignments.length === 0) {
+                return; // No compatible assignments are possible
+            }
+
+            // --- MASTER PROBLEM: Select the best columns (assignments) iteratively ---
+            // This is a greedy approach to solving the assignment problem. At each step,
+            // we select the best possible assignment (the one with the lowest cost)
+            // from the remaining candidates.
+            
+            // Sort candidates by cost to easily pick the best one first (longest wait time)
+            candidateAssignments.sort((a, b) => a.cost - b.cost);
+            
+            let assignedVessels = new Set();
+            let assignedBerths = new Set();
+            let assignmentsMade = 0;
+
+            for (const assignment of candidateAssignments) {
+                const { vessel, berth, waitingHours } = assignment;
+
+                // Check if vessel or berth has already been assigned in this optimization step
+                if (!assignedVessels.has(vessel.id) && !assignedBerths.has(berth.id)) {
+                    
+                    // --- Assign the vessel to the berth ---
                     vessel.berthingTime = new Date(simulationTime);
                     const serviceDuration = (Math.floor(Math.random() * 8) + 4) * 60 * 60 * 1000;
                     vessel.departureTime = new Date(vessel.berthingTime.getTime() + serviceDuration);
                     vessel.status = 'Berthed';
-                    vessel.assignedBerthId = assignedBerth.id;
-                    
-                    assignedBerth.isOccupied = true;
-                    assignedBerth.occupiedBy = vessel.id;
-                    assignedBerth.freeAfter = vessel.departureTime;
-                    assignedBerth.currentVessel = vessel;
+                    vessel.assignedBerthId = berth.id;
 
+                    berth.isOccupied = true;
+                    berth.occupiedBy = vessel.id;
+                    berth.freeAfter = vessel.departureTime;
+                    berth.currentVessel = vessel;
+                    
                     ongoingVesselServices[vessel.name] = vessel.departureTime;
 
-                    const waitTimeHours = (vessel.berthingTime - vessel.arrivalTime) / (1000 * 60 * 60);
+                    // Add to the sets of assigned resources to prevent double-booking
+                    assignedVessels.add(vessel.id);
+                    assignedBerths.add(berth.id);
                     
-                    // Add bounds checking for wait time
-                    if (waitTimeHours > 0 && waitTimeHours < 1000) { // upper bound
-                        totalWaitTimeForDay += waitTimeHours;
-                        
-                        const targetWaitTimeHours = 4;
-                        const timeOptimized = Math.max(0, targetWaitTimeHours - waitTimeHours);
+                    assignmentsMade++;
+
+                    // Update analytics
+                    if (waitingHours > 0 && waitingHours < 1000) { // Safety bounds
+                        totalWaitTimeForDay += waitingHours;
+                        const targetWaitTimeHours = 4; // An arbitrary target for optimization calculation
+                        const timeOptimized = Math.max(0, targetWaitTimeHours - waitingHours);
                         totalTimeOptimizedForDay += timeOptimized;
                     }
 
-                    logActivity(`<strong>${vessel.name}</strong> berthed at <strong>${assignedBerth.name}</strong>. Wait time: ${waitTimeHours.toFixed(2)}h`, 'berthing');
-                    berthHistory[assignedBerth.name].push({ 
-                        vesselName: vessel.name, 
-                        berthingTime: vessel.berthingTime, 
-                        departureTime: vessel.departureTime, 
-                        status: 'Berthed' 
+                    logActivity(`<strong>${vessel.name}</strong> berthed at <strong>${berth.name}</strong>. Wait time: ${waitingHours.toFixed(2)}h`, 'berthing');
+                    berthHistory[berth.name].push({
+                        vesselName: vessel.name,
+                        berthingTime: vessel.berthingTime,
+                        departureTime: vessel.departureTime,
+                        status: 'Berthed'
                     });
                 }
+            }
+            
+            if (assignmentsMade > 0) {
+                 logActivity(`Optimization algorithm assigned ${assignmentsMade} vessel(s) to available berths.`, 'progress');
             }
         }
         
