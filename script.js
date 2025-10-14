@@ -846,7 +846,7 @@ let currentTutorialStep = 1;
         }
 
         function advanceSimulationHour() {
-            // Part 1: Update world state by processing departures
+            // Update world state by processing departures
             berths.forEach(b => {
                 if (b.isOccupied && b.freeAfter && b.freeAfter <= simulationTime) {
                     const departedVessel = vessels.find(v => v.id === b.occupiedBy);
@@ -873,7 +873,7 @@ let currentTutorialStep = 1;
                 }
             });
 
-            // Part 2: Run the optimization algorithm for new assignments
+            // Run the optimization algorithm for new assignments
             optimizeScheduleWithColumnGeneration();
         }
 
@@ -890,7 +890,7 @@ let currentTutorialStep = 1;
          * 2. A 'Subproblem' (or 'Pricing Problem'): A routine to find a new variable (column)
          * with a negative reduced cost, which can improve the Master Problem's solution.
          *
-         * In this simulation, we apply this concept metaphorically:
+         * We apply this concept metaphorically:
          * - A 'Column' represents a potential assignment of a single vessel to a compatible berth.
          * - The 'Subproblem' is the process of generating all valid potential assignments (columns) and calculating their cost.
          * - The 'Master Problem' is the process of selecting the best set of non-conflicting
@@ -904,7 +904,7 @@ let currentTutorialStep = 1;
                 return; // Nothing to optimize
             }
 
-            // --- SUBPROBLEM / PRICING PROBLEM: Generate all candidate columns (assignments) ---
+            // SUBPROBLEM / PRICING PROBLEM: Generate all candidate columns (assignments)
             // Each candidate is a potential assignment with an associated cost.
             // We aim to prioritize vessels that have been waiting the longest.
             // The "cost" here is the negative of the waiting time, so minimizing cost
@@ -928,7 +928,7 @@ let currentTutorialStep = 1;
                 return; // No compatible assignments are possible
             }
 
-            // --- MASTER PROBLEM: Select the best columns (assignments) iteratively ---
+            // MASTER PROBLEM: Select the best columns (assignments) iteratively
             // This is a greedy approach to solving the assignment problem. At each step,
             // we select the best possible assignment (the one with the lowest cost)
             // from the remaining candidates.
@@ -946,7 +946,7 @@ let currentTutorialStep = 1;
                 // Check if vessel or berth has already been assigned in this optimization step
                 if (!assignedVessels.has(vessel.id) && !assignedBerths.has(berth.id)) {
                     
-                    // --- Assign the vessel to the berth ---
+                    // Assign the vessel to the berth
                     vessel.berthingTime = new Date(simulationTime);
                     const serviceDuration = (Math.floor(Math.random() * 8) + 4) * 60 * 60 * 1000;
                     vessel.departureTime = new Date(vessel.berthingTime.getTime() + serviceDuration);
